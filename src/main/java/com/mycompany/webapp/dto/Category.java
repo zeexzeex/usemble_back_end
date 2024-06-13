@@ -1,5 +1,9 @@
 package com.mycompany.webapp.dto;
 
-public class Category {
+import lombok.Data;
 
+@Data
+public class Category {
+	private int ctno;
+	private String ctname;
 }

@@ -1,5 +1,13 @@
 package com.mycompany.webapp.dto;
 
-public class Review {
+import java.util.Date;
 
+import lombok.Data;
+
+@Data
+public class Review {
+	private int sno;
+	private String mid;
+	private String rcontent;
+	private Date rdate;
 }

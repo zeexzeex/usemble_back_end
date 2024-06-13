@@ -1,5 +1,24 @@
 package com.mycompany.webapp.dto;
 
-public class Member {
+import java.util.Date;
 
+import lombok.Data;
+
+@Data
+public class Member {
+	private String mid;
+	private String mpassword;
+	private String mname;
+	private int mssn;
+	private String msex;
+	private String mphone;
+	private String mbankName;
+	private String mpayAccount;
+	private byte[] mprofileData;
+	private String mprofileType;
+	private String mprofileName;
+	private String mintroduce;
+	private String mrole;
+	private Boolean menabled;
+	private Date mdate;
 }

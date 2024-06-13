@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/notice")
-public class NoticeController {
+@RequestMapping("/admin")
+public class AdminController {
 
 }

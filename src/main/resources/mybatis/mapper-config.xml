@@ -11,13 +11,13 @@
 	<typeAliases>
 		<typeAlias alias="member" type="com.mycompany.webapp.dto.Member"/>
 		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Pager" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Category" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Mcategory" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Mlike" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Notice" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Review" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Sjoin" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Social" />
-		<typeAlias alias="pager" type="com.mycompany.webapp.dto.SocialImg" />
+		<typeAlias alias="category" type="com.mycompany.webapp.dto.Category" />
+		<typeAlias alias="mcategory" type="com.mycompany.webapp.dto.Mcategory" />
+		<typeAlias alias="mlike" type="com.mycompany.webapp.dto.Mlike" />
+		<typeAlias alias="notice" type="com.mycompany.webapp.dto.Notice" />
+		<typeAlias alias="review" type="com.mycompany.webapp.dto.Review" />
+		<typeAlias alias="sjoin" type="com.mycompany.webapp.dto.Sjoin" />
+		<typeAlias alias="social" type="com.mycompany.webapp.dto.Social" />
+		<typeAlias alias="socialImg" type="com.mycompany.webapp.dto.SocialImg" />
 	</typeAliases>
 </configuration>

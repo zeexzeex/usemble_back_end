@@ -1,5 +1,14 @@
 package com.mycompany.webapp.dto;
 
-public class Notice {
+import java.util.Date;
 
+import lombok.Data;
+
+@Data
+public class Notice {
+	private int nno;
+	private String mid;
+	private String ntitle;
+	private String ncontent;
+	private Date ndate;
 }

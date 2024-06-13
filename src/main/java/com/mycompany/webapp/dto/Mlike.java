@@ -1,5 +1,9 @@
 package com.mycompany.webapp.dto;
 
-public class Mlike {
+import lombok.Data;
 
+@Data
+public class Mlike {
+	private String mid;
+	private String fmid;
 }
