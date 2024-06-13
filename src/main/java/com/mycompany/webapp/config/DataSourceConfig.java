@@ -20,8 +20,9 @@ public class DataSourceConfig {
 		config.setJdbcUrl("jdbc:oracle:thin:@kosa164.iptime.org:1521:orcl");
 		config.setUsername("user_final_team1");
 		config.setPassword("oracle");
-		config.setMaximumPoolSize(8);
+		config.setMaximumPoolSize(12);
 		HikariDataSource hikariDataSource = new HikariDataSource(config);
+
 		return hikariDataSource;
 	}
 }
