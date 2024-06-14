@@ -19,6 +19,6 @@ public class Member {
 	private String mprofileName;
 	private String mintroduce;
 	private String mrole;
-	private Boolean menabled;
+	private boolean menabled;
 	private Date mdate;
 }
