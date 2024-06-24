@@ -18,5 +18,4 @@ public class AppUserDetails extends User {
 	public Member getMember() {
 		return member;
 	}
-
 }
