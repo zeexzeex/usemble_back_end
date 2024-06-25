@@ -10,7 +10,7 @@
 
 
 	<select id="selectByMid" parameterType="String" resultType="Member">
-		select mid, mname, mpassword, menabled, mrole
+		select mid, mname, mpassword, menabled, mrole, mintroduce
 		from member
 		where mid = #{mid}
 	</select>
