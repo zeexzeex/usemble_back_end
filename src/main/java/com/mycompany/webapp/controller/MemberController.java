@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.security.AppUserDetails;
 import com.mycompany.webapp.security.AppUserDetailsService;
 import com.mycompany.webapp.security.JwtProvider;
@@ -57,5 +60,32 @@ public class MemberController {
 		}
 
 		return map;
+	}
+
+	@PostMapping("/join")
+	public Member join(Member member) {
+		if (member.getMattach() != null && !member.getMattach().isEmpty()) {
+			MultipartFile mf = member.getMattach();
+			// 파일 이름 설정
+			member.setMprofileName(mf.getOriginalFilename());
+			// 파일 종류 설정
+			member.setMprofileType(mf.getContentType());
+			try {
+				member.setMprofileData(mf.getBytes());
+			} catch (IOException e) {
+
+			}
+		}
+		// 비밀번호
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // 암호화된 비밀번호를 //
+																										// 얻어낸다.
+		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+		// 아이디 활성화 설정
+		member.setMenabled(true);
+		// 권한 설정
+		member.setMrole("ROLE_USER");
+		// 회원 가입 처리
+		memberService.join(member);
+		return member;
 	}
 }

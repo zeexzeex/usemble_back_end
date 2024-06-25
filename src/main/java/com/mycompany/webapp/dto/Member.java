@@ -2,6 +2,8 @@ package com.mycompany.webapp.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -9,16 +11,18 @@ public class Member {
 	private String mid;
 	private String mpassword;
 	private String mname;
-	private int mssn;
+	private int mbirth;
 	private String msex;
 	private String mphone;
 	private String mbankName;
 	private String mpayAccount;
-	private byte[] mprofileData;
-	private String mprofileType;
-	private String mprofileName;
 	private String mintroduce;
 	private String mrole;
 	private boolean menabled;
 	private Date mdate;
+
+	private MultipartFile mattach;
+	private byte[] mprofileData;
+	private String mprofileType;
+	private String mprofileName;
 }
