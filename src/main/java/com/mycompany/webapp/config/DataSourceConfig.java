@@ -17,7 +17,7 @@ public class DataSourceConfig {
 	public DataSource dataSource() {
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName("oracle.jdbc.OracleDriver");
-		config.setJdbcUrl("jdbc:oracle:thin:@kosa164.iptime.org:1521:orcl");
+		config.setJdbcUrl("jdbc:oracle:thin:@kosa160.iptime.org:1521:orcl");
 		config.setUsername("user_final_team1");
 		config.setPassword("oracle");
 		config.setMaximumPoolSize(12);
