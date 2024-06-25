@@ -53,9 +53,6 @@ public class MemberService {
 		return like;
 	}
 
-	@Autowired
-	private MemberDao memberDao;
-
 	public void join(Member member) {
 		memberDao.insert(member);
 	}

@@ -101,7 +101,6 @@ public class MemberController {
 		memberService.join(member);
 		return member;
 	}
-}
 
 	@GetMapping("/likeList")
 	public Map<String, Object> likeList(String mid) {
