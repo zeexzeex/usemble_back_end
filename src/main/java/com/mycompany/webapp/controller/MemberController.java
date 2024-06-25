@@ -14,6 +14,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,16 +53,21 @@ public class MemberController {
 			boolean checkResult = passwordEncoder.matches(mpassword, userDetails.getPassword());
 
 			if (checkResult) {
-				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-						userDetails.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+				if (!userDetails.getMember().isMenabled()) {
+					map.put("result", "fail");
+					map.put("reason", "id");
+				} else {
+					Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+							userDetails.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(authentication);
 
-				String accessToken = jwtProvider.createAccessToken(mid, userDetails.getMember().getMrole());
-				map.put("result", "success");
-				map.put("mid", mid);
-				map.put("mname", userDetails.getMember().getMname());
-				map.put("mrole", userDetails.getMember().getMrole());
-				map.put("accessToken", accessToken);
+					String accessToken = jwtProvider.createAccessToken(mid, userDetails.getMember().getMrole());
+					map.put("result", "success");
+					map.put("mid", mid);
+					map.put("mname", userDetails.getMember().getMname());
+					map.put("mrole", userDetails.getMember().getMrole());
+					map.put("accessToken", accessToken);
+				}
 			} else {
 				map.put("result", "fail");
 				map.put("reason", "password");
@@ -147,5 +153,10 @@ public class MemberController {
 	public int likeCnt(String mid) {
 		int likeCnt = memberService.getLikeCnt(mid);
 		return likeCnt;
+	}
+
+	@PatchMapping("/withdraw")
+	public void withdraw(String mid) {
+		int withdraw = memberService.withdrawMember(mid);
 	}
 }

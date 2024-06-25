@@ -8,10 +8,14 @@
 		#{mprofileName},#{mintroduce},#{mrole},#{menabled},sysdate)
 	</insert>
 
-
 	<select id="selectByMid" parameterType="String" resultType="Member">
 		select mid, mname, mpassword, menabled, mrole, mintroduce
 		from member
 		where mid = #{mid}
 	</select>
+	<update id="withdrawMemberByMid" parameterType="String">
+		update member
+		set menabled=0
+		where mid=#{mid}
+	</update>
 </mapper>

@@ -7,5 +7,8 @@ import com.mycompany.webapp.dto.Member;
 @Mapper
 public interface MemberDao {
 	public Member selectByMid(String mid);
+
 	public int insert(Member member);
+
+	public int withdrawMemberByMid(String mid);
 }

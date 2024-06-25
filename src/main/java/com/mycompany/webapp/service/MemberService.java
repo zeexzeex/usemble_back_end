@@ -57,4 +57,9 @@ public class MemberService {
 		memberDao.insert(member);
 	}
 
+	public int withdrawMember(String mid) {
+		int withdraw = memberDao.withdrawMemberByMid(mid);
+		return withdraw;
+	}
+
 }
