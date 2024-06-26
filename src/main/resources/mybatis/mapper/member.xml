@@ -27,5 +27,10 @@
 		from member
 		where mid = #{mid}
 	</select>
+	<select id="attachSelectByMid" parameterType="String" resultType="Member">
+		select mid, mprofileData, mprofileType, mprofileName
+		from member
+		where mid=#{mid}
 	
+	</select>
 </mapper>

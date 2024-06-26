@@ -16,5 +16,6 @@ public interface MemberDao {
 
 	public int checkId(String mid);
 
+	public Member attachSelectByMid(String mid);
 
 }

@@ -65,5 +65,9 @@ public class MemberService {
 		return result;
 	}
 
+	public Member getMemberAttach(String mid) {
+		Member member = memberDao.attachSelectByMid(mid);
+		return member;
+	}
 
 }
