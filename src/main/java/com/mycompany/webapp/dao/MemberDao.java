@@ -18,4 +18,6 @@ public interface MemberDao {
 
 	public Member attachSelectByMid(String mid);
 
+
+	public int updateMpasswordByMid(Member member);
 }

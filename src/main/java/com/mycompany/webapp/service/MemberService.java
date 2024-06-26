@@ -70,4 +70,8 @@ public class MemberService {
 		return member;
 	}
 
+	public void updateMpassword(Member member) {
+		int mupdate = memberDao.updateMpasswordByMid(member);
+	}
+
 }

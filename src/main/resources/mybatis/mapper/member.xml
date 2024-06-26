@@ -33,4 +33,9 @@
 		where mid=#{mid}
 	
 	</select>
+	<update id="updateMpasswordByMid" parameterType="Member">
+		update member
+		set mpassword=#{mpassword}
+		where mid=#{mid}
+	</update>
 </mapper>
