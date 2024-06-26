@@ -8,6 +8,8 @@ import com.mycompany.webapp.dto.Member;
 public interface MemberDao {
 	public Member selectByMid(String mid);
 
+	public Member selectOfficialProfileByMid(String mid);
+
 	public int insert(Member member);
 
 	public int withdrawMemberByMid(String mid);

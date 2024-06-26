@@ -24,9 +24,7 @@ public class MemberService {
 	}
 
 	public Member getProfile(String mid) {
-		Member member = memberDao.selectByMid(mid);
-		member.setMpassword(null);
-
+		Member member = memberDao.selectOfficialProfileByMid(mid);
 		return member;
 	}
 

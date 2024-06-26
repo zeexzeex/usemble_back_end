@@ -7,9 +7,13 @@
 		values(#{mid},#{mname},#{mpassword},#{mbirth},#{msex},#{mphone},#{mbankName},#{mpayAccount},#{mprofileData},#{mprofileType},
 		#{mprofileName},#{mintroduce},#{mrole},#{menabled},sysdate)
 	</insert>
-
 	<select id="selectByMid" parameterType="String" resultType="Member">
-		select mid, mname, mpassword, menabled, mrole, mintroduce
+		select mid, mname, mpassword, menabled, mrole
+		from member
+		where mid = #{mid}
+	</select>
+	<select id="selectOfficialProfileByMid" parameterType="String" resultType="Member">
+		select mid, mname, mintroduce, mdate
 		from member
 		where mid = #{mid}
 	</select>
@@ -18,7 +22,6 @@
 		set menabled=0
 		where mid=#{mid}
 	</update>
-	
 	<select id ="checkId" parameterType="String" resultType="int">
 		select count(mid) 
 		from member
