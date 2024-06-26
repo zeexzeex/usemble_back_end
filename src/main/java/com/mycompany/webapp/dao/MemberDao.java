@@ -15,4 +15,6 @@ public interface MemberDao {
 	public int withdrawMemberByMid(String mid);
 
 	public int checkId(String mid);
+
+
 }

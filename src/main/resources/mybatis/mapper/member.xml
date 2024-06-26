@@ -27,4 +27,5 @@
 		from member
 		where mid = #{mid}
 	</select>
+	
 </mapper>
