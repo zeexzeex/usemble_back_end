@@ -18,4 +18,10 @@
 		set menabled=0
 		where mid=#{mid}
 	</update>
+	
+	<select id ="checkId" parameterType="String" resultType="int">
+		select count(mid) 
+		from member
+		where mid = #{mid}
+	</select>
 </mapper>

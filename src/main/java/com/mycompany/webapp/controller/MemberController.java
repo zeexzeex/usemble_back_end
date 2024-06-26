@@ -159,4 +159,11 @@ public class MemberController {
 	public void withdraw(String mid) {
 		int withdraw = memberService.withdrawMember(mid);
 	}
+
+	@GetMapping("idCheck")
+	public int idCheck(String mid) {
+		int result = memberService.checkId(mid);
+		return result;
+	}
+
 }

@@ -62,4 +62,9 @@ public class MemberService {
 		return withdraw;
 	}
 
+	public int checkId(String mid) {
+		int result = memberDao.checkId(mid);
+		return result;
+	}
+
 }
