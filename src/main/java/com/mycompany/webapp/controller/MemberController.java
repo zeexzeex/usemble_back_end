@@ -284,13 +284,25 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updatePassword")
-	public void updatePassword(Member member) {
-		// 임시 비밀번호 생성
-		String newPassword = member.getMpassword();
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+	public Map<String, String> updatePassword(Member member) {
+		Map<String, String> map = new HashMap<>();
 
-		memberService.updateMpassword(member);
+		String newPassword = member.getMpassword();
+
+		AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(member.getMid());
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+		boolean checkResult = passwordEncoder.matches(newPassword, userDetails.getPassword());
+
+		if (checkResult) {
+			map.put("response", "fail");
+		} else {
+			member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+			memberService.updateMpassword(member);
+			map.put("response", "success");
+		}
+
+		return map;
 	}
 
 	@PatchMapping("/updatePrivacy")
