@@ -33,9 +33,29 @@
 		where mid=#{mid}
 	
 	</select>
+	<update id="updateByMid" parameterType="String">
+		update member set mintroduce=#{mintroduce},  
+			mprofileData=#{ mprofileData},
+			mprofileType=#{mprofileType},
+			mprofileName=#{mprofileName},
+		where mid=#{mid}
+	</update>
 	<update id="updateMpasswordByMid" parameterType="Member">
 		update member
 		set mpassword=#{mpassword}
 		where mid=#{mid}
 	</update>
+	<update id="privacyUpdateByMid" parameterType="Member">
+		update member
+		set mphone=#{mphone},
+			mbankName=#{mbankName},
+			mpayAccount =#{mpayAccount}
+		where mid=#{mid}
+	
+	</update>
+	<select id="selectByMidPrivacy" parameterType="String" resultType="Member"> 
+		select mid, mphone, mbankName, mpayAccount
+		from member
+		where mid= #{mid}
+	</select>
 </mapper>
