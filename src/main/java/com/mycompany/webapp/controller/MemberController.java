@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
 import com.mycompany.webapp.security.AppUserDetails;
@@ -122,6 +124,12 @@ public class MemberController {
 		// 회원 가입 처리
 		memberService.join(member);
 		return member;
+	}
+
+	@GetMapping("/category")
+	public List<Category> AllCategory(Model model) {
+		List<Category> categoryList = memberService.getCategory();
+		return categoryList;
 	}
 
 	@GetMapping("/likeList")

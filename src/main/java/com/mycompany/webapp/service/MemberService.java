@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mycompany.webapp.dao.CategoryDao;
 import com.mycompany.webapp.dao.MemberDao;
 import com.mycompany.webapp.dao.MlikeDao;
+import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
 
@@ -17,6 +19,9 @@ public class MemberService {
 
 	@Autowired
 	MemberDao memberDao;
+
+	@Autowired
+	CategoryDao categoryDao;
 
 	public List<String> getLikeList(String mid) {
 		List<String> likeList = mlikeDao.selectLikeListByMid(mid);
@@ -83,6 +88,12 @@ public class MemberService {
 	public Member getPrivacy(String mid) {
 		Member member = memberDao.selectPrivacyByMid(mid);
 		return member;
+	}
+
+	public List<Category> getCategory() {
+		List<Category> categoryList = categoryDao.getCategory();
+		return categoryList;
+
 	}
 
 }
