@@ -45,16 +45,16 @@
 		set mpassword=#{mpassword}
 		where mid=#{mid}
 	</update>
-	<update id="privacyUpdateByMid" parameterType="Member">
+	<update id="updatePrivacy" parameterType="Member">
 		update member
-		set mphone=#{mphone},
+		set mname=#{mname}, 
+			mphone=#{mphone},
 			mbankName=#{mbankName},
 			mpayAccount =#{mpayAccount}
 		where mid=#{mid}
-	
 	</update>
-	<select id="selectByMidPrivacy" parameterType="String" resultType="Member"> 
-		select mid, mphone, mbankName, mpayAccount
+	<select id="selectPrivacyByMid" parameterType="String" resultType="Member"> 
+		select mid, mname, mbirth, mphone, msex, mbankName, mpayAccount
 		from member
 		where mid= #{mid}
 	</select>

@@ -22,7 +22,7 @@ public interface MemberDao {
 
 	public int updateMpasswordByMid(Member member);
 
-	public int privacyUpdateByMid(Member member);
+	public int updatePrivacy(Member member);
 
-	public Member selectByMidPrivacy(String mid);
+	public Member selectPrivacyByMid(String mid);
 }

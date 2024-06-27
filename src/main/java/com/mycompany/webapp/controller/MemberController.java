@@ -147,6 +147,12 @@ public class MemberController {
 		return map;
 	}
 
+	@GetMapping("/privacy")
+	public Member privacy(String mid) {
+		Member member = memberService.getPrivacy(mid);
+		return member;
+	}
+
 	@GetMapping("/likeState")
 	public boolean likeState(Mlike mlike) {
 		boolean likeState = memberService.getLikeState(mlike);
@@ -277,13 +283,20 @@ public class MemberController {
 
 	}
 
-	@PutMapping("/privacyUpdate")
-	public Member privacyUpdate(Member member) {
+	@PatchMapping("/updatePassword")
+	public void updatePassword(Member member) {
+		// 임시 비밀번호 생성
+		String newPassword = member.getMpassword();
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+
+		memberService.updateMpassword(member);
+	}
+
+	@PatchMapping("/updatePrivacy")
+	public void updatePrivacy(Member member) {
 		// 멤버 서비스
-		memberService.privacyUpdate(member);
-		// 업데이트 할 멤버정보 가져오기
-		member = memberService.getPrivacy(member.getMid());
-		return member;
+		memberService.updatePrivacy(member);
 	}
 
 }
