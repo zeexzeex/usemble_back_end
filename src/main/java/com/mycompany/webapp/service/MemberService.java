@@ -67,8 +67,23 @@ public class MemberService {
 		return member;
 	}
 
+	public int update(Member member) {
+		return memberDao.updateByMid(member);
+
+	}
+
 	public void updateMpassword(Member member) {
 		int mupdate = memberDao.updateMpasswordByMid(member);
+	}
+
+	public int privacyUpdate(Member member) {
+		return memberDao.privacyUpdateByMid(member);
+	}
+
+	public Member getPrivacy(String mid) {
+		Member member = memberDao.selectByMidPrivacy(mid);
+		return member;
+
 	}
 
 }

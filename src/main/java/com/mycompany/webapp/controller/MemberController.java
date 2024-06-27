@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -257,4 +258,32 @@ public class MemberController {
 			log.error(e.getMessage());
 		}
 	}
+
+	@PutMapping("/update")
+	public Member update(Member member) {
+		MultipartFile mf = member.getMattach();
+		member.setMprofileName(mf.getOriginalFilename());
+		member.setMprofileType(mf.getContentType());
+		try {
+			member.setMprofileData(mf.getBytes());
+		} catch (IOException e) {
+
+		}
+
+		memberService.update(member);
+		member = memberService.getProfile(member.getMid());
+
+		return member;
+
+	}
+
+	@PutMapping("/privacyUpdate")
+	public Member privacyUpdate(Member member) {
+		// 멤버 서비스
+		memberService.privacyUpdate(member);
+		// 업데이트 할 멤버정보 가져오기
+		member = memberService.getPrivacy(member.getMid());
+		return member;
+	}
+
 }
