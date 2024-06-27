@@ -96,4 +96,8 @@ public class MemberService {
 
 	}
 
+	public void updateAgree(Member member) {
+		int mupdate = memberDao.updateAgree(member);
+	}
+
 }

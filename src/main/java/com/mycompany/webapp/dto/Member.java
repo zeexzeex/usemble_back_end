@@ -20,6 +20,7 @@ public class Member {
 	private String mrole;
 	private boolean menabled;
 	private Date mdate;
+	private boolean agree;
 
 	private MultipartFile mattach;
 	private byte[] mprofileData;

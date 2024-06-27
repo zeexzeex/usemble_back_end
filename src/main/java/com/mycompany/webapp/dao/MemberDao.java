@@ -25,4 +25,6 @@ public interface MemberDao {
 	public int updatePrivacy(Member member);
 
 	public Member selectPrivacyByMid(String mid);
+
+	public int updateAgree(Member member);
 }

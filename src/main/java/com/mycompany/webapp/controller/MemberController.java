@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -273,7 +274,7 @@ public class MemberController {
 		}
 	}
 
-	@PutMapping("/update")
+	@PutMapping("/updateProfile")
 	public Member update(Member member) {
 		MultipartFile mf = member.getMattach();
 		member.setMprofileName(mf.getOriginalFilename());
@@ -325,9 +326,21 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updatePrivacy")
-	public void updatePrivacy(Member member) {
+	public Map<String, String> updatePrivacy(@RequestBody Member member) {
 		// 멤버 서비스
 		memberService.updatePrivacy(member);
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+		return map;
+	}
+
+	@PatchMapping("/updateAgree")
+	public Map<String, String> updateAgree(@RequestBody Member member) {
+		// 멤버 서비스
+		memberService.updateAgree(member);
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+		return map;
 	}
 
 }

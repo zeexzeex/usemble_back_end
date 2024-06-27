@@ -50,11 +50,16 @@
 		set mname=#{mname}, 
 			mphone=#{mphone},
 			mbankName=#{mbankName},
-			mpayAccount =#{mpayAccount}
+			mpayAccount=#{mpayAccount},
+		where mid=#{mid}
+	</update>
+	<update id="updateAgree" parameterType="Member">
+		update member
+		set agree=#{agree}
 		where mid=#{mid}
 	</update>
 	<select id="selectPrivacyByMid" parameterType="String" resultType="Member"> 
-		select mid, mname, mbirth, mphone, msex, mbankName, mpayAccount
+		select mid, mname, mbirth, mphone, msex, mbankName, mpayAccount, agree
 		from member
 		where mid= #{mid}
 	</select>
