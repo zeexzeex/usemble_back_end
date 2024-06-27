@@ -76,14 +76,13 @@ public class MemberService {
 		int mupdate = memberDao.updateMpasswordByMid(member);
 	}
 
-	public int updatePrivacy(Member member) {
-		return memberDao.updatePrivacy(member);
+	public void updatePrivacy(Member member) {
+		int mupdate = memberDao.updatePrivacy(member);
 	}
 
 	public Member getPrivacy(String mid) {
 		Member member = memberDao.selectPrivacyByMid(mid);
 		return member;
-
 	}
 
 }

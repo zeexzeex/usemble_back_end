@@ -284,22 +284,33 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updatePassword")
-	public Map<String, String> updatePassword(Member member) {
+	public Map<String, String> updatePassword(String mid, String originPassword, String newPassword) {
 		Map<String, String> map = new HashMap<>();
 
-		String newPassword = member.getMpassword();
-
-		AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(member.getMid());
+		AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-		boolean checkResult = passwordEncoder.matches(newPassword, userDetails.getPassword());
+		Member member = new Member();
+		member.setMid(mid);
 
-		if (checkResult) {
-			map.put("response", "fail");
+		boolean checkOrigin = passwordEncoder.matches(originPassword, userDetails.getPassword());
+
+		if (checkOrigin) {
+			boolean checkResult = passwordEncoder.matches(newPassword, userDetails.getPassword());
+
+			if (checkResult) {
+				map.put("response", "fail");
+				map.put("reason", "newPassword");
+
+			} else {
+				member.setMpassword(passwordEncoder.encode(newPassword));
+				memberService.updateMpassword(member);
+				map.put("response", "success");
+			}
 		} else {
-			member.setMpassword(passwordEncoder.encode(member.getMpassword()));
-			memberService.updateMpassword(member);
-			map.put("response", "success");
+			map.put("response", "fail");
+			map.put("reason", "originPassword");
+
 		}
 
 		return map;
