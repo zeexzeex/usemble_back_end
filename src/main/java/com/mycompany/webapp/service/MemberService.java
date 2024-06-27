@@ -30,7 +30,6 @@ public class MemberService {
 
 	public int getLikeCnt(String mid) {
 		int mlikeCnt = mlikeDao.count(mid);
-
 		return mlikeCnt;
 	}
 
@@ -41,13 +40,11 @@ public class MemberService {
 
 	public int deleteLike(Mlike mlike) {
 		int like = mlikeDao.deleteLikeByMidFmid(mlike);
-
 		return like;
 	}
 
 	public int like(Mlike mlike) {
 		int like = mlikeDao.insertLikeByMidFmid(mlike);
-
 		return like;
 	}
 

@@ -32,6 +32,8 @@ import com.mycompany.webapp.security.AppUserDetails;
 import com.mycompany.webapp.security.AppUserDetailsService;
 import com.mycompany.webapp.security.JwtProvider;
 import com.mycompany.webapp.service.MemberService;
+import com.mycompany.webapp.service.ReviewService;
+import com.mycompany.webapp.service.SocialService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +49,12 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private SocialService socialService;
+
+	@Autowired
+	private ReviewService reviewService;
 
 	@PostMapping("/login")
 	public Map<String, String> userLogin(String mid, String mpassword) {
@@ -160,6 +168,18 @@ public class MemberController {
 	public int likeCnt(String mid) {
 		int likeCnt = memberService.getLikeCnt(mid);
 		return likeCnt;
+	}
+
+	@GetMapping("/socialCnt")
+	public int socialCnt(String mid) {
+		int socialCnt = socialService.getSocialCnt(mid);
+		return socialCnt;
+	}
+
+	@GetMapping("/reviewCnt")
+	public int reviewCnt(String mid) {
+		int reviewCnt = reviewService.getReviewCnt(mid);
+		return reviewCnt;
 	}
 
 	@PatchMapping("/withdraw")
