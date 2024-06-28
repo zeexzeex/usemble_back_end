@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -274,22 +273,21 @@ public class MemberController {
 		}
 	}
 
-	@PutMapping("/updateProfile")
-	public Member update(Member member) {
-		MultipartFile mf = member.getMattach();
-		member.setMprofileName(mf.getOriginalFilename());
-		member.setMprofileType(mf.getContentType());
-		try {
-			member.setMprofileData(mf.getBytes());
-		} catch (IOException e) {
+	@PatchMapping("/updateProfile")
+	public void updateProfile(Member member) {
+		if (member.getMattach() != null && !member.getMattach().isEmpty()) {
+			MultipartFile mf = member.getMattach();
+			member.setMprofileName(mf.getOriginalFilename());
+			member.setMprofileType(mf.getContentType());
 
+			try {
+				member.setMprofileData(mf.getBytes());
+			} catch (IOException e) {
+
+			}
 		}
 
-		memberService.update(member);
-		member = memberService.getProfile(member.getMid());
-
-		return member;
-
+		memberService.updateProfile(member);
 	}
 
 	@PatchMapping("/updatePassword")

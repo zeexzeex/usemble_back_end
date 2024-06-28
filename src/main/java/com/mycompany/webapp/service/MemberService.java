@@ -72,9 +72,8 @@ public class MemberService {
 		return member;
 	}
 
-	public int update(Member member) {
-		return memberDao.updateByMid(member);
-
+	public void updateProfile(Member member) {
+		int mupdate = memberDao.updateProfileByMid(member);
 	}
 
 	public void updateMpassword(Member member) {

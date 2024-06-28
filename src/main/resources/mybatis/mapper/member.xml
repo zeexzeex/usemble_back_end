@@ -33,11 +33,13 @@
 		where mid=#{mid}
 	
 	</select>
-	<update id="updateByMid" parameterType="String">
-		update member set mintroduce=#{mintroduce},  
-			mprofileData=#{ mprofileData},
-			mprofileType=#{mprofileType},
-			mprofileName=#{mprofileName},
+	<update id="updateProfileByMid" parameterType="Member">
+		update member set mintroduce=#{mintroduce}  
+			<if test="mprofileName != null">
+				,mprofileData=#{mprofileData},
+				mprofileType=#{mprofileType},
+				mprofileName=#{mprofileName}
+			</if>
 		where mid=#{mid}
 	</update>
 	<update id="updateMpasswordByMid" parameterType="Member">
