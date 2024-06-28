@@ -10,9 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CategoryDao;
+import com.mycompany.webapp.dao.McategoryDao;
 import com.mycompany.webapp.dao.MemberDao;
 import com.mycompany.webapp.dao.MlikeDao;
 import com.mycompany.webapp.dto.Category;
+import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
 
@@ -26,6 +28,9 @@ public class MemberService {
 
 	@Autowired
 	CategoryDao categoryDao;
+	
+	@Autowired
+	McategoryDao mcategoryDao;
 
 	public List<String> getLikeList(Map<String, Object> map) {
 		List<String> likeList = mlikeDao.selectLikeListByMid(map);
@@ -142,6 +147,16 @@ public class MemberService {
 
 	public void updateAgree(Member member) {
 		int mupdate = memberDao.updateAgree(member);
+	}
+
+	public List<Category> getMcategory(String mid) {
+		List<Category> mcategory = mcategoryDao.getMcategory(mid);
+		return mcategory;
+	}
+
+	public Mcategory putCategory(String mid) {
+		Mcategory mcategory = mcategoryDao.putMcategory(mid);
+		return mcategory;
 	}
 
 }

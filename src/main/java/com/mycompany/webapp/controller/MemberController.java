@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.webapp.dto.Category;
+import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
 import com.mycompany.webapp.dto.Pager;
@@ -360,4 +361,15 @@ public class MemberController {
 		return map;
 	}
 
+	@GetMapping("/mcategory")
+	public List<Category> mcategoryList(String mid) {
+		List<Category> mcategory = memberService.getMcategory(mid);
+		return mcategory;
+	}
+	
+	@PostMapping("/putCategory")
+	public Mcategory putCategory(String mid) {
+		Mcategory mcategory = memberService.putCategory(mid);
+		return mcategory;
+	}
 }
