@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -204,38 +203,16 @@ public class MemberController {
 
 	@PatchMapping("/findPassword")
 	public Map<String, String> findPassword(String mid) {
-		// 사용자 정보 얻기 - 아이디
-		// 랜덤 비밀번호 생성
-		int passwordLength = 8;
-		char[] passwordTable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-				'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '!', '@', '#', '$', '%', '^', '&',
-				'*', '(', ')', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
-
-		Random random = new Random(System.currentTimeMillis());
-		int tableLength = passwordTable.length;
-		StringBuffer buf = new StringBuffer();
 
 		Map<String, String> map = new HashMap<>();
-
-		for (int i = 0; i < passwordLength; i++) {
-			buf.append(passwordTable[random.nextInt(tableLength)]);
-		}
 
 		try {
 			AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
 			Member member = userDetails.getMember();
 
 			// 임시 비밀번호 생성
-			String newPassword = buf.toString();
+			String newPassword = memberService.getTempPassword(member);
 
-			member.setMpassword(newPassword);
-			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // 암호화된 비밀번호를
-																											// //
-			// 얻어낸다.
-			member.setMpassword(passwordEncoder.encode(member.getMpassword()));
-
-			memberService.updateMpassword(member);
 			// 임시 비밀번호
 			map.put("result", "success");
 			map.put("mpassword", newPassword);

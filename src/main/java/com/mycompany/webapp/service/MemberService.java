@@ -1,8 +1,11 @@
 package com.mycompany.webapp.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CategoryDao;
@@ -80,6 +83,35 @@ public class MemberService {
 		int mupdate = memberDao.updateMpasswordByMid(member);
 	}
 
+	public String getTempPassword(Member member) {
+		// 사용자 정보 얻기 - 아이디
+		// 랜덤 비밀번호 생성
+		int passwordLength = 8;
+		char[] passwordTable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+				'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '!', '@', '#', '$', '%', '^', '&',
+				'*', '(', ')', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+
+		Random random = new Random(System.currentTimeMillis());
+		int tableLength = passwordTable.length;
+		StringBuffer buf = new StringBuffer();
+
+		for (int i = 0; i < passwordLength; i++) {
+			buf.append(passwordTable[random.nextInt(tableLength)]);
+		}
+
+		String tempPassword = buf.toString();
+
+		member.setMpassword(tempPassword);
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // 암호화된 비밀번호를 //
+																										// //
+		// 얻어낸다.
+		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+		memberDao.updateMpasswordByMid(member);
+
+		return tempPassword;
+	}
+
 	public void updatePrivacy(Member member) {
 		int mupdate = memberDao.updatePrivacy(member);
 	}
@@ -92,7 +124,6 @@ public class MemberService {
 	public List<Category> getCategory() {
 		List<Category> categoryList = categoryDao.getCategory();
 		return categoryList;
-
 	}
 
 	public void updateAgree(Member member) {
