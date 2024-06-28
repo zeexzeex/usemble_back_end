@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.security.AppUserDetails;
 import com.mycompany.webapp.security.AppUserDetailsService;
 import com.mycompany.webapp.security.JwtProvider;
@@ -132,13 +134,20 @@ public class MemberController {
 	}
 
 	@GetMapping("/likeList")
-	public Map<String, Object> likeList(String mid) {
-		Map<String, Object> map = new HashMap<>();
+	public Map<String, Object> likeList(@RequestParam(defaultValue = "1") int pageNo, String mid) {
+		int totalRows = memberService.getMyLikeCnt(mid);
+		Pager pager = new Pager(4, 5, totalRows, pageNo);
 
-		List<String> likeList = memberService.getLikeList(mid);
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+		param.put("pager", pager);
+
+		List<String> likeList = memberService.getLikeList(param);
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("response", "success");
 		map.put("likeList", likeList);
+		map.put("pager", pager);
 
 		return map;
 	}

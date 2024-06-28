@@ -1,6 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,19 @@ public class MemberService {
 	@Autowired
 	CategoryDao categoryDao;
 
-	public List<String> getLikeList(String mid) {
-		List<String> likeList = mlikeDao.selectLikeListByMid(mid);
+	public List<String> getLikeList(Map<String, Object> map) {
+		List<String> likeList = mlikeDao.selectLikeListByMid(map);
 		return likeList;
 	}
 
 	public Member getProfile(String mid) {
 		Member member = memberDao.selectOfficialProfileByMid(mid);
 		return member;
+	}
+
+	public int getMyLikeCnt(String mid) {
+		int mlikeCnt = mlikeDao.myLikeCount(mid);
+		return mlikeCnt;
 	}
 
 	public int getLikeCnt(String mid) {
