@@ -12,6 +12,11 @@ public interface McategoryDao {
 
 	List<Category> getMcategory(String mid);
 
-	Mcategory putMcategory(String mid);
+
+
+	void putMcategory(Mcategory mcategory);
+
+
+
 
 }

@@ -154,9 +154,8 @@ public class MemberService {
 		return mcategory;
 	}
 
-	public Mcategory putCategory(String mid) {
-		Mcategory mcategory = mcategoryDao.putMcategory(mid);
-		return mcategory;
+	public void putCategory(Mcategory mcategory) {
+		 mcategoryDao.putMcategory(mcategory);
 	}
 
 }

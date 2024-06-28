@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -368,8 +369,13 @@ public class MemberController {
 	}
 	
 	@PostMapping("/putCategory")
-	public Mcategory putCategory(String mid) {
-		Mcategory mcategory = memberService.putCategory(mid);
-		return mcategory;
+	public Map<String, String> putCategory(Mcategory mcategory) {
+		log.info("실행");
+		log.info(mcategory.toString());
+		memberService.putCategory(mcategory);
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+		
+		return map;
 	}
 }
