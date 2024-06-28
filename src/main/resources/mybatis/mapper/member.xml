@@ -52,7 +52,7 @@
 		set mname=#{mname}, 
 			mphone=#{mphone},
 			mbankName=#{mbankName},
-			mpayAccount=#{mpayAccount},
+			mpayAccount=#{mpayAccount}
 		where mid=#{mid}
 	</update>
 	<update id="updateAgree" parameterType="Member">
