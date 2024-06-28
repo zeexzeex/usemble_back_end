@@ -65,16 +65,22 @@ public class MemberController {
 		Map<String, String> map = new HashMap<>();
 
 		try {
+			// 유저 정보 받아오기
 			AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
+
+			// 비밀번호 확인
 			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
 			boolean checkResult = passwordEncoder.matches(mpassword, userDetails.getPassword());
 
+			// 비밀번호가 같다면
 			if (checkResult) {
+				// 유저가 탈퇴한 계정일 때
 				if (!userDetails.getMember().isMenabled()) {
 					map.put("result", "fail");
 					map.put("reason", "id");
 				} else {
+					// 유저 정보와 토큰을 맵에 넣어서 전달
 					Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
 							userDetails.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -90,7 +96,7 @@ public class MemberController {
 				map.put("result", "fail");
 				map.put("reason", "password");
 			}
-		} catch (UsernameNotFoundException e) {
+		} catch (UsernameNotFoundException e) { // 존재하지 않는 계정일 때
 			map.put("result", "fail");
 			map.put("reason", "id");
 			return map;
@@ -135,16 +141,20 @@ public class MemberController {
 
 	@GetMapping("/likeList")
 	public Map<String, Object> likeList(@RequestParam(defaultValue = "1") int pageNo, String mid) {
+		// 내가 좋아요한 사람의 수
 		int totalRows = memberService.getMyLikeCnt(mid);
+
+		// 한 페이지에 4개의 열을 가지고 5개의 페이지 그룹을 가진 페이저 생성
 		Pager pager = new Pager(4, 5, totalRows, pageNo);
 
+		// 유저 아이디 기준으로 좋아요 페이지 가져오기
 		Map<String, Object> param = new HashMap<>();
 		param.put("mid", mid);
 		param.put("pager", pager);
-
 		List<String> likeList = memberService.getLikeList(param);
-		Map<String, Object> map = new HashMap<>();
 
+		// 좋아요 페이지와 페이저 전송
+		Map<String, Object> map = new HashMap<>();
 		map.put("response", "success");
 		map.put("likeList", likeList);
 		map.put("pager", pager);
@@ -154,9 +164,11 @@ public class MemberController {
 
 	@GetMapping("/profile")
 	public Map<String, Object> profile(String mid) {
-		Map<String, Object> map = new HashMap<>();
+		// 유저 아이디, 이름, 자기소개, 가입일 가져오기
 		Member member = memberService.getProfile(mid);
 
+		// 유저 정보 전송
+		Map<String, Object> map = new HashMap<>();
 		map.put("response", "success");
 		map.put("member", member);
 
@@ -165,12 +177,15 @@ public class MemberController {
 
 	@GetMapping("/privacy")
 	public Member privacy(String mid) {
+		// 유저 아이디, 이름, 생년월일, 전화번호, 성별, 은행명, 계좌번호, 동의사항 가져오기
 		Member member = memberService.getPrivacy(mid);
+
 		return member;
 	}
 
 	@GetMapping("/likeState")
 	public boolean likeState(Mlike mlike) {
+		// 유저 좋아요 여부 가져오기
 		boolean likeState = memberService.getLikeState(mlike);
 
 		return likeState;
@@ -178,44 +193,50 @@ public class MemberController {
 
 	@PostMapping("/like")
 	public void like(Mlike mlike) {
+		// 좋아요 추가
 		int like = memberService.like(mlike);
 	}
 
 	@DeleteMapping("/unlike")
 	public void unlike(Mlike mlike) {
+		// 좋아요 삭제
 		int like = memberService.deleteLike(mlike);
 
 	}
 
 	@GetMapping("/likeCnt")
 	public int likeCnt(String mid) {
+		// 좋아요 수 가져오기
 		int likeCnt = memberService.getLikeCnt(mid);
 		return likeCnt;
 	}
 
 	@GetMapping("/socialCnt")
 	public int socialCnt(String mid) {
+		// 소셜 작성 수 가져오기
 		int socialCnt = socialService.getSocialCnt(mid);
 		return socialCnt;
 	}
 
 	@GetMapping("/reviewCnt")
 	public int reviewCnt(String mid) {
+		// 리뷰 받은 수 가져오기
 		int reviewCnt = reviewService.getReviewCnt(mid);
 		return reviewCnt;
 	}
 
 	@PatchMapping("/withdraw")
 	public void withdraw(String mid) {
+		// 유저 탈퇴하기
 		int withdraw = memberService.withdrawMember(mid);
 	}
 
 	@PatchMapping("/findPassword")
 	public Map<String, String> findPassword(String mid) {
-
 		Map<String, String> map = new HashMap<>();
 
 		try {
+			// 유저 정보 가져오기
 			AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
 			Member member = userDetails.getMember();
 
@@ -225,7 +246,7 @@ public class MemberController {
 			// 임시 비밀번호
 			map.put("result", "success");
 			map.put("mpassword", newPassword);
-		} catch (UsernameNotFoundException e) {
+		} catch (UsernameNotFoundException e) { // 아이디가 존재하지 않을 때
 			map.put("result", "fail");
 			map.put("reason", "id");
 		}
@@ -261,7 +282,9 @@ public class MemberController {
 
 	@PatchMapping("/updateProfile")
 	public void updateProfile(Member member) {
+		// 프로필 이미지가 존재할 때
 		if (member.getMattach() != null && !member.getMattach().isEmpty()) {
+			// 멀티파트파일 데이터를 멤버 객체에 저장
 			MultipartFile mf = member.getMattach();
 			member.setMprofileName(mf.getOriginalFilename());
 			member.setMprofileType(mf.getContentType());
@@ -273,6 +296,7 @@ public class MemberController {
 			}
 		}
 
+		// 멤버 객체로 프로필 업데이트
 		memberService.updateProfile(member);
 	}
 
@@ -280,22 +304,28 @@ public class MemberController {
 	public Map<String, String> updatePassword(String mid, String originPassword, String newPassword) {
 		Map<String, String> map = new HashMap<>();
 
+		// 유저 아이디 가져오기
 		AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+		// 맴버 객체 생성 및 mid 설정
 		Member member = new Member();
 		member.setMid(mid);
 
+		// 기존 비밀번호가 맞는지 확인
 		boolean checkOrigin = passwordEncoder.matches(originPassword, userDetails.getPassword());
 
+		// 기존 비밀번호가 맞다면
 		if (checkOrigin) {
+			// 신규 비밀번호가 기존 비밀번호와 동일한지 확인
 			boolean checkResult = passwordEncoder.matches(newPassword, userDetails.getPassword());
 
+			// 신규 비밀번호와 기존 비밀번호가 동일할 때
 			if (checkResult) {
 				map.put("response", "fail");
 				map.put("reason", "newPassword");
-
 			} else {
+				// 새 비밀번호를 멤버 객체에 설정 후 비밀번호 업데이트
 				member.setMpassword(passwordEncoder.encode(newPassword));
 				memberService.updateMpassword(member);
 				map.put("response", "success");
@@ -303,7 +333,6 @@ public class MemberController {
 		} else {
 			map.put("response", "fail");
 			map.put("reason", "originPassword");
-
 		}
 
 		return map;
@@ -311,19 +340,23 @@ public class MemberController {
 
 	@PatchMapping("/updatePrivacy")
 	public Map<String, String> updatePrivacy(@RequestBody Member member) {
-		// 멤버 서비스
+		// 새로운 멤버 정보로 업데이트
 		memberService.updatePrivacy(member);
+
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
+
 		return map;
 	}
 
 	@PatchMapping("/updateAgree")
 	public Map<String, String> updateAgree(@RequestBody Member member) {
-		// 멤버 서비스
+		// 선택 동의 사항 업데이트
 		memberService.updateAgree(member);
+
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
+
 		return map;
 	}
 

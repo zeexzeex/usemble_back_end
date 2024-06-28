@@ -91,28 +91,36 @@ public class MemberService {
 
 	public String getTempPassword(Member member) {
 		// 사용자 정보 얻기 - 아이디
-		// 랜덤 비밀번호 생성
+		// 임시 비밀번호 생성
+		// 임시 비밀번호 글자 수
 		int passwordLength = 8;
+		// 임시 비밀번호에 들어갈 수 있는 글자 테이블
 		char[] passwordTable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
 				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
 				'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '!', '@', '#', '$', '%', '^', '&',
 				'*', '(', ')', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
 
+		// 현재 시각을 시드로 랜덤 객체 생성
 		Random random = new Random(System.currentTimeMillis());
 		int tableLength = passwordTable.length;
+
 		StringBuffer buf = new StringBuffer();
 
+		// StringBuffer에 임시 비밀번호 글자 수만큼 passwordTable 속 글자를 랜덤하게 추가
 		for (int i = 0; i < passwordLength; i++) {
 			buf.append(passwordTable[random.nextInt(tableLength)]);
 		}
 
+		// 임시 비밀번호 저장
 		String tempPassword = buf.toString();
 
-		member.setMpassword(tempPassword);
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // 암호화된 비밀번호를 //
-																										// //
-		// 얻어낸다.
-		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
+		// 임시 비밀번호 암호화를 위해 PasswordEncoder 객체 가져오기
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+		// 멤버 객체에 신규 비밀번호 암호화 후 설정
+		member.setMpassword(passwordEncoder.encode(tempPassword));
+
+		// 멤버 비밀번호 업데이트
 		memberDao.updateMpasswordByMid(member);
 
 		return tempPassword;
