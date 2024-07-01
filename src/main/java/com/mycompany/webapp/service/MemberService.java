@@ -160,4 +160,8 @@ public class MemberService {
 		}
 	}
 
+	public List<Mcategory> updateMcategory(Mcategory mcategory) {
+		List<Mcategory> mcategoryList = mcategoryDao.updateMcategory(mcategory);
+		return mcategoryList;
+	}
 }

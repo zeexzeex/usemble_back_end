@@ -13,4 +13,6 @@ public interface McategoryDao {
 
 	void putMcategory(Mcategory mcategory);
 
+	List<Mcategory> updateMcategory(Mcategory mcategory);
+
 }
