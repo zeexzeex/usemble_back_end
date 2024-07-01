@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Mcategory {
 	private String mid;
-	private int number;
+	private int ctno;
 }

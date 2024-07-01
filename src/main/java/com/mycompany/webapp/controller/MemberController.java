@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,6 +116,7 @@ public class MemberController {
 			member.setMprofileType(mf.getContentType());
 			try {
 				member.setMprofileData(mf.getBytes());
+				mf.getInputStream().close();
 			} catch (IOException e) {
 
 			}
@@ -132,6 +132,9 @@ public class MemberController {
 		member.setMrole("ROLE_USER");
 		// 회원 가입 처리
 		memberService.join(member);
+		member.setMattach(null);
+		member.setMprofileData(null);
+
 		return member;
 	}
 
@@ -363,19 +366,18 @@ public class MemberController {
 	}
 
 	@GetMapping("/mcategory")
-	public List<Category> mcategoryList(String mid) {
-		List<Category> mcategory = memberService.getMcategory(mid);
+	public List<Mcategory> mcategoryList(String mid) {
+		List<Mcategory> mcategory = memberService.getMcategory(mid);
 		return mcategory;
 	}
-	
-	@PostMapping("/putCategory")
-	public Map<String, String> putCategory(Mcategory mcategory) {
-		log.info("실행");
-		log.info(mcategory.toString());
-		memberService.putCategory(mcategory);
+
+	@PostMapping("/putMcategory")
+	public Map<String, String> putMcategory(@RequestBody List<Mcategory> mcategory) {
+		memberService.putMcategory(mcategory);
+
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
-		
+
 		return map;
 	}
 }

@@ -4,19 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Mcategory;
 
 @Mapper
 public interface McategoryDao {
 
-	List<Category> getMcategory(String mid);
-
-
+	List<Mcategory> getMcategory(String mid);
 
 	void putMcategory(Mcategory mcategory);
-
-
-
 
 }

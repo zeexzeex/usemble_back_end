@@ -28,7 +28,7 @@ public class MemberService {
 
 	@Autowired
 	CategoryDao categoryDao;
-	
+
 	@Autowired
 	McategoryDao mcategoryDao;
 
@@ -149,13 +149,15 @@ public class MemberService {
 		int mupdate = memberDao.updateAgree(member);
 	}
 
-	public List<Category> getMcategory(String mid) {
-		List<Category> mcategory = mcategoryDao.getMcategory(mid);
+	public List<Mcategory> getMcategory(String mid) {
+		List<Mcategory> mcategory = mcategoryDao.getMcategory(mid);
 		return mcategory;
 	}
 
-	public void putCategory(Mcategory mcategory) {
-		 mcategoryDao.putMcategory(mcategory);
+	public void putMcategory(List<Mcategory> mcategory) {
+		for (int i = 0; i < mcategory.size(); i++) {
+			mcategoryDao.putMcategory(mcategory.get(i));
+		}
 	}
 
 }
