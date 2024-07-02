@@ -16,7 +16,7 @@
 	 sstarttime, sfee, smembercount, sstatus, saddress)
 	 values(#{sno}, #{mid}, #{ctno}, #{stitle}, #{scontent}, 
 	 #{sthumbData}, #{sthumbType}, #{sthumbName}, sysdate, #{sstartDate}, #{sendDate},
-	 #{sstartTime}, #{sfee}, 0, #{sstatus}, #{saddress})
+	 #{sstartTime}, #{sfee}, #{smemberCount}, #{sstatus}, #{saddress})
 </insert>
 
 <select id="selectBySno" parameterType="int" resultType="social">
