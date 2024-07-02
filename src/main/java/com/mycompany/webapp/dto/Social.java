@@ -2,6 +2,8 @@ package com.mycompany.webapp.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -15,9 +17,14 @@ public class Social {
 	private String sthumbType;
 	private String sthumbName;
 	private Date swriteDate;
-	private Date sdDate;
+	private Date sstartDate;
+	private Date sendDate;
+	private String sstartTime;
 	private int sfee;
 	private int smemberCount;
 	private String sstatus;
 	private String saddress;
+
+	private MultipartFile sthumb;
+
 }
