@@ -1,7 +1,6 @@
 package com.mycompany.webapp.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -126,7 +125,7 @@ public class MemberController {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // 암호화된 비밀번호를 //
 																										// 얻어낸다.
 		member.setMpassword(passwordEncoder.encode(member.getMpassword()));
-
+		log.info("" + member.isAgree());
 		// 아이디 활성화 설정
 		member.setMenabled(true);
 		// 권한 설정
@@ -385,5 +384,15 @@ public class MemberController {
 	public List<Mcategory> updateMcategory(Mcategory mcategory) {
 		List<Mcategory> mcategoryList = memberService.updateMcategory(mcategory);
 		return mcategoryList;
+	}
+
+	@PostMapping("/putAgree")
+	public Map<String, String> putAgree(String mid, boolean agree) {
+		memberService.putAgree(mid);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+
+		return map;
 	}
 }

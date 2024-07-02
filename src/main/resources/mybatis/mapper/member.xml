@@ -3,9 +3,9 @@
 <mapper namespace="com.mycompany.webapp.dao.MemberDao">
 	<insert id="insert" parameterType="Member"> 
 		insert into member(mid, mname, mpassword, mbirth, msex, mphone, mbankName, mpayAccount, mprofileData, mprofileType, mprofileName,
-		mintroduce, mrole, menabled, mdate)
+		mintroduce, mrole, menabled, mdate, agree)
 		values(#{mid},#{mname},#{mpassword},#{mbirth},#{msex},#{mphone},#{mbankName},#{mpayAccount},#{mprofileData},#{mprofileType},
-		#{mprofileName},#{mintroduce},#{mrole},#{menabled},sysdate)
+		#{mprofileName},#{mintroduce},#{mrole},#{menabled},sysdate, #{agree})
 	</insert>
 	<select id="selectByMid" parameterType="String" resultType="Member">
 		select mid, mname, mpassword, menabled, mrole
@@ -65,4 +65,7 @@
 		from member
 		where mid= #{mid}
 	</select>
+	<update id="putAgree" parameterType="String">
+		update member set agree=#{agree} where mid=#{mid}
+	</update>
 </mapper>

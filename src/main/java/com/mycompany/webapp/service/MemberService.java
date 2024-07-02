@@ -164,4 +164,8 @@ public class MemberService {
 		List<Mcategory> mcategoryList = mcategoryDao.updateMcategory(mcategory);
 		return mcategoryList;
 	}
+
+	public void putAgree(String mid) {
+		int pta = memberDao.putAgree(mid);
+	}
 }
