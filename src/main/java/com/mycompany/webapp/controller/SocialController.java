@@ -2,6 +2,8 @@ package com.mycompany.webapp.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.webapp.dto.Pager;
+import com.mycompany.webapp.dto.Sjoin;
 import com.mycompany.webapp.dto.Social;
 import com.mycompany.webapp.service.SocialService;
 
@@ -35,7 +39,7 @@ public class SocialController {
 	public Map<String, String> write(Social social) {
 		Map<String, String> map = new HashMap<>();
 
-		MultipartFile mf = social.getSthumb();
+		MultipartFile mf = social.getSthumbnail();
 		// 파일 이름 설정
 		social.setSthumbName(mf.getOriginalFilename());
 		// 파일 종류 설정
@@ -47,7 +51,13 @@ public class SocialController {
 
 		}
 
+		Date sstartDate = social.getSstartDate();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sstartDate);
+		calendar.add(calendar.DATE, -1);
+
 		social.setSstatus("모집");
+		social.setSdeadline(calendar.getTime());
 
 		socialService.writeSocial(social);
 
@@ -129,6 +139,21 @@ public class SocialController {
 		} catch (IOException e) {
 			log.error(e.toString());
 		}
+	}
+
+	@PostMapping("/sjoin")
+	public Map<String, String> sjoin(@RequestBody Sjoin sjoin) {
+		Map<String, String> map = new HashMap<>();
+
+		Map<String, String> isJoin = socialService.joinSocial(sjoin);
+
+		if (isJoin.get("response") == "success") {
+			map.put("response", "success");
+		} else {
+			map.put("response", "fail");
+		}
+
+		return map;
 	}
 
 }

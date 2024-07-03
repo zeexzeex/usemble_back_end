@@ -12,16 +12,16 @@
 			select seq_sno.nextval from dual
 	</selectKey>
 	insert into social(sno, mid, ctno, stitle, scontent,
-	 sthumbdata, sthumbtype, sthumbname, swritedate, sstartdate, senddate, 
-	 sstarttime, sfee, smembercount, sstatus, saddress)
+	 sthumbdata, sthumbtype, sthumbname, swritedate, sstartdate, 
+	 sstarttime, sfee, smembercount, sstatus, saddress, sdeadline)
 	 values(#{sno}, #{mid}, #{ctno}, #{stitle}, #{scontent}, 
-	 #{sthumbData}, #{sthumbType}, #{sthumbName}, sysdate, #{sstartDate}, #{sendDate},
-	 #{sstartTime}, #{sfee}, #{smemberCount}, #{sstatus}, #{saddress})
+	 #{sthumbData}, #{sthumbType}, #{sthumbName}, sysdate, #{sstartDate},
+	 #{sstartTime}, #{sfee}, #{smemberCount}, #{sstatus}, #{saddress}, #{sdeadline})
 </insert>
 
 <select id="selectBySno" parameterType="int" resultType="social">
-	select sno, mid, ctno, stitle, scontent, swritedate, sstartdate, senddate, 
-	 sstarttime, sfee, smembercount, sstatus, saddress
+	select sno, mid, ctno, stitle, scontent, swritedate, sstartdate, 
+	 sstarttime, sfee, smembercount, sstatus, saddress, sdeadline
 	from social
 	where sno=#{sno}
 </select>
@@ -33,12 +33,12 @@
 		from(
 			select sno, stitle, saddress, sfee, ctno
 			from social
-			where <![CDATA[sstatus='모집']]>
+			where <![CDATA[sstatus='모집' and sdeadline > sysdate]]>
 			<if test="ctno != null">
 			 and ctno=#{ctno}
 			</if>
 			<if test="sort == 'deadline'">
-			order by sstartdate, sstarttime
+			order by sdeadline, sstarttime
 			</if>
 			<if test="sort == null or sort == 'recently'">
 			order by sno desc
