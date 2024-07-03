@@ -37,10 +37,10 @@
 			<if test="ctno != null">
 			 and ctno=#{ctno}
 			</if>
-			<if test="sort == 'deadline'">
+			<if test="sort.equals('deadline')">
 			order by sdeadline, sstarttime
 			</if>
-			<if test="sort == null or sort == 'recently'">
+			<if test="sort == null or sort.equals('recently')">
 			order by sno desc
 			</if>
 		)
