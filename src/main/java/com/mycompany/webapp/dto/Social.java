@@ -17,14 +17,14 @@ public class Social {
 	private String sthumbType;
 	private String sthumbName;
 	private Date swriteDate;
+	private Date sdeadline;
 	private Date sstartDate;
-	private Date sendDate;
 	private String sstartTime;
 	private int sfee;
 	private int smemberCount;
 	private String sstatus;
 	private String saddress;
 
-	private MultipartFile sthumb;
+	private MultipartFile sthumbnail;
 
 }
