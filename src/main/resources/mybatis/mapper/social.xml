@@ -37,12 +37,14 @@
 			<if test="ctno != null">
 			 and ctno=#{ctno}
 			</if>
-			<if test="sort != null and sort.equals('deadline')">
-			order by sdeadline, sstarttime
-			</if>
-			<if test="sort == null or sort.equals('recently')">
-			order by sno desc
-			</if>
+			<choose>
+				<when test="sort != null and sort.equals('deadline')">
+					order by sdeadline, sstarttime
+				</when>
+				<otherwise>
+					order by sno desc
+				</otherwise>
+			</choose>
 		)
 		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 	)
