@@ -23,4 +23,6 @@ public interface SocialDao {
 
 	public void updateSstatusBySno(Map<String, Object> param);
 
+	public Social selectSpayInfoBySno(int sno);
+
 }

@@ -13,6 +13,9 @@ import com.mycompany.webapp.dao.SocialDao;
 import com.mycompany.webapp.dto.Sjoin;
 import com.mycompany.webapp.dto.Social;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SocialService {
 	@Autowired
@@ -57,30 +60,79 @@ public class SocialService {
 
 	public Map<String, String> joinSocial(Sjoin sjoin) {
 		int sno = sjoin.getSno();
-		Social social = socialDao.selectBySno(sno);
+		Social social = socialDao.selectSpayInfoBySno(sno);
 		int currentSmember = sjoinDao.count(sno);
 
 		Map<String, String> map = new HashMap<>();
 		Date deadline = social.getSdeadline();
 
-		if (deadline.after(new Date()) && social.getSstatus() == "모집") {
+		if (social.getMid().equals(sjoin.getMid())) {
+			map.put("response", "fail");
+			map.put("reason", "same");
+			return map;
+		}
+
+		if (sjoinDao.isSjoin(sjoin)) {
+			map.put("response", "fail");
+			map.put("reason", "alreadyJoin");
+			return map;
+		}
+
+		if (deadline.after(new Date()) && social.getSstatus().equals("recruitment")) {
 			if (social.getSmemberCount() - 1 > currentSmember) {
 				sjoinDao.insert(sjoin);
 				map.put("response", "success");
 			} else if (social.getSmemberCount() - 1 == currentSmember) {
 				Map<String, Object> param = new HashMap<>();
 				param.put("sno", sno);
-				param.put("sstatus", "만원");
+				param.put("sstatus", "full");
 				socialDao.updateSstatusBySno(param);
 
 				sjoinDao.insert(sjoin);
 				map.put("response", "success");
 			} else {
 				map.put("response", "fail");
+				map.put("reason", "full");
 			}
+		} else {
+			map.put("response", "fail");
+			map.put("reason", "accessDenied");
 		}
 
 		return map;
+	}
+
+	public int getSjoinCnt(int sno) {
+		int sjoinCnt = sjoinDao.count(sno);
+		return sjoinCnt;
+	}
+
+	public Social getSpayInfo(int sno) {
+		Social sjoinInfo = socialDao.selectSpayInfoBySno(sno);
+		return sjoinInfo;
+	}
+
+	public boolean getSjoinState(Sjoin sjoin) {
+		boolean sjoinState = sjoinDao.isSjoin(sjoin);
+		return sjoinState;
+	}
+
+	public void cancelSjoin(Sjoin sjoin) {
+		int sno = sjoin.getSno();
+		Social social = socialDao.selectSpayInfoBySno(sno);
+		int currentSmember = sjoinDao.count(sno);
+		Date deadline = social.getSdeadline();
+
+		if (deadline.after(new Date())) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("sno", social.getSno());
+			param.put("sstatus", "recruitment");
+			socialDao.updateSstatusBySno(param);
+
+			int sjoinCnt = sjoinDao.deleteSjoin(sjoin);
+		} else {
+			int sjoinCnt = sjoinDao.deleteSjoin(sjoin);
+		}
 	}
 
 }

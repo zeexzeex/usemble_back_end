@@ -7,8 +7,12 @@ import com.mycompany.webapp.dto.Sjoin;
 @Mapper
 public interface SjoinDao {
 
-	public void insert(Sjoin sjoin);
+	public int insert(Sjoin sjoin);
 
 	public int count(int sno);
+
+	public boolean isSjoin(Sjoin sjoin);
+
+	public int deleteSjoin(Sjoin sjoin);
 
 }

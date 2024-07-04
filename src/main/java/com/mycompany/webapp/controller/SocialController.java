@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +57,7 @@ public class SocialController {
 		calendar.setTime(sstartDate);
 		calendar.add(calendar.DATE, -1);
 
-		social.setSstatus("모집");
+		social.setSstatus("recruitment");
 		social.setSdeadline(calendar.getTime());
 
 		socialService.writeSocial(social);
@@ -88,8 +89,6 @@ public class SocialController {
 		int totalRows = socialService.getSocialCntByParam(param);
 
 		Pager pager = new Pager(9, 5, totalRows, pageNo);
-
-		log.info("pager: " + pager.toString());
 
 		if (sort != null) {
 			param.put("sort", sort);
@@ -143,17 +142,58 @@ public class SocialController {
 
 	@PostMapping("/sjoin")
 	public Map<String, String> sjoin(@RequestBody Sjoin sjoin) {
-		Map<String, String> map = new HashMap<>();
-
 		Map<String, String> isJoin = socialService.joinSocial(sjoin);
 
-		if (isJoin.get("response") == "success") {
-			map.put("response", "success");
-		} else {
-			map.put("response", "fail");
-		}
+		return isJoin;
+	}
+
+	@GetMapping("/sjoin/count/{sno}")
+	public Map<String, Object> sjoinCnt(@PathVariable int sno) {
+		Map<String, Object> map = new HashMap<>();
+
+		int sjoinCnt = socialService.getSjoinCnt(sno);
+
+		map.put("response", "success");
+		map.put("sjoinCnt", sjoinCnt);
 
 		return map;
 	}
 
+	@GetMapping("/pay/{sno}")
+	public Map<String, Object> sjoinInfo(@PathVariable int sno) {
+		Map<String, Object> map = new HashMap<>();
+
+		if (sno == 0) {
+			map.put("response", "fail");
+			return map;
+		}
+		Social spayInfo = socialService.getSpayInfo(sno);
+
+		map.put("response", "success");
+		map.put("spayInfo", spayInfo);
+
+		return map;
+	}
+
+	@GetMapping("/sjoin/state")
+	public Map<String, Object> sjoinState(Sjoin sjoin) {
+		boolean sjoinState = socialService.getSjoinState(sjoin);
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("response", "success");
+		map.put("sjoinState", sjoinState);
+
+		return map;
+	}
+
+	@DeleteMapping("/sjoin/cancel")
+	public Map<String, String> cancelSjoin(Sjoin sjoin) {
+		Map<String, String> map = new HashMap<>();
+
+		socialService.cancelSjoin(sjoin);
+		map.put("response", "success");
+
+		return map;
+	}
 }

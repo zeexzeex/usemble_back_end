@@ -33,11 +33,11 @@
 		from(
 			select sno, stitle, saddress, sfee, ctno
 			from social
-			where <![CDATA[sstatus='모집' and sdeadline > sysdate]]>
+			where <![CDATA[sdeadline > sysdate]]>
 			<if test="ctno != null">
 			 and ctno=#{ctno}
 			</if>
-			<if test="sort.equals('deadline')">
+			<if test="sort != null and sort.equals('deadline')">
 			order by sdeadline, sstarttime
 			</if>
 			<if test="sort == null or sort.equals('recently')">
@@ -67,5 +67,11 @@
 	update social set sstatus=#{sstatus}
 	where sno=#{sno}
 </update>
+
+<select id="selectSpayInfoBySno" parameterType="int" resultType="social">
+	select sno, mid, stitle, sstartdate, sstarttime, saddress, sfee, sstatus, sdeadline, smembercount
+	from social
+	where sno=#{sno}
+</select>
 
 </mapper>

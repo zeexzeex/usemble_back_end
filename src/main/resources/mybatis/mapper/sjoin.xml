@@ -11,5 +11,14 @@
 		from sjoin
 		where sno=#{sno}
 	</select>
+	
+	<select id="isSjoin" parameterType="sjoin" resultType="boolean">
+		select count(*)
+		from sjoin
+		where mid=#{mid} and sno=#{sno}
+	</select>
 
+	<delete id="deleteSjoin" parameterType="sjoin">
+		delete from sjoin where mid=#{mid} and sno=#{sno}
+	</delete>
 </mapper>
