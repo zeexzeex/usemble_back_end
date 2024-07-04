@@ -7,6 +7,7 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
-//@EnableMethodSecurity(securedEnabled = true) //@Secured을 사용할 수 있도록 설정
+@EnableMethodSecurity(prePostEnabled = true)
+//@EnableMethodSecurity(securedEnabled = true) // @Secured을 사용할 수 있도록 설정
 public class WebSecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
