@@ -187,6 +187,12 @@ public class SocialController {
 		return map;
 	}
 
+	@GetMapping("/mainSocial")
+	public List<Social> mainSocial() {
+		List<Social> socialList = socialService.getMainSocial();
+		return socialList;
+	}
+
 	@DeleteMapping("/sjoin/cancel")
 	public Map<String, String> cancelSjoin(Sjoin sjoin) {
 		Map<String, String> map = new HashMap<>();

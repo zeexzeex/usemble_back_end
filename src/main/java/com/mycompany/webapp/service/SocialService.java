@@ -102,6 +102,10 @@ public class SocialService {
 		return map;
 	}
 
+	public List<Social> getMainSocial() {
+		List<Social> mainSocial = socialDao.getMainSocial();
+		return mainSocial;
+	}
 	public int getSjoinCnt(int sno) {
 		int sjoinCnt = sjoinDao.count(sno);
 		return sjoinCnt;

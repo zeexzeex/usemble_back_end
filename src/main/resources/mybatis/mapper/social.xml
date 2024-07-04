@@ -68,6 +68,12 @@
 	where sno=#{sno}
 </update>
 
+<select id="getMainSocial" resultType="Social">
+	select sno, stitle, saddress, sfee, ctno
+	from social
+	where <![CDATA[sdeadline > sysdate]]>
+</select>
+
 <select id="selectSpayInfoBySno" parameterType="int" resultType="social">
 	select sno, mid, stitle, sstartdate, sstarttime, saddress, sfee, sstatus, sdeadline, smembercount
 	from social

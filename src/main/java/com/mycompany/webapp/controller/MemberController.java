@@ -380,7 +380,7 @@ public class MemberController {
 		return map;
 	}
 
-	@PatchMapping("/updateCategory")
+	@PatchMapping("/updateMcategory")
 	public List<Mcategory> updateMcategory(Mcategory mcategory) {
 		List<Mcategory> mcategoryList = memberService.updateMcategory(mcategory);
 		return mcategoryList;
