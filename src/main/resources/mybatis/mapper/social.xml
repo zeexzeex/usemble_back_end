@@ -74,6 +74,7 @@
 	select sno, stitle, saddress, sfee, ctno
 	from social
 	where <![CDATA[sdeadline > sysdate]]>
+	order by sno desc
 </select>
 
 <select id="selectSpayInfoBySno" parameterType="int" resultType="social">
