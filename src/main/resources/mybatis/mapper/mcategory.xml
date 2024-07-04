@@ -12,9 +12,13 @@
 		values (#{mid}, #{ctno})
 	</insert>
 	
-	<update id="updateMcategory">
-		update mcategory set ctno= #{ctno}
-		where mid = #{mid}
-	</update>
-
+	
+	<delete id="deleteMcategory" parameterType="String">
+		delete from mcategory where mid = #{mid}
+	</delete>
+	
+	<insert id="updateMcategory" parameterType="Mcategory">
+		insert into mcategory(mid, ctno)
+		values (#{mid}, #{ctno})
+	</insert>
 </mapper>

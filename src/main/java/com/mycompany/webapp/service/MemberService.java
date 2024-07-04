@@ -1,5 +1,6 @@
 package com.mycompany.webapp.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,6 +19,9 @@ import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class MemberService {
 	@Autowired
@@ -160,12 +164,19 @@ public class MemberService {
 		}
 	}
 
-	public List<Mcategory> updateMcategory(Mcategory mcategory) {
-		List<Mcategory> mcategoryList = mcategoryDao.updateMcategory(mcategory);
-		return mcategoryList;
+	public void updateMcategory(List<Mcategory> mcategory) {
+		mcategoryDao.deleteMcategory(mcategory.get(0).getMid());
+		Iterator<Mcategory> iter = mcategory.iterator();
+		while (iter.hasNext()) {
+			int mcategoryList = mcategoryDao.updateMcategory(iter.next());
+		}
 	}
 
 	public void putAgree(String mid) {
 		int pta = memberDao.putAgree(mid);
+	}
+
+	public void deleteMcategory(String mid) {
+		mcategoryDao.deleteMcategory(mid);
 	}
 }

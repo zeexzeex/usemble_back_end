@@ -11,8 +11,10 @@ public interface McategoryDao {
 
 	List<Mcategory> getMcategory(String mid);
 
-	void putMcategory(Mcategory mcategory);
+	public void putMcategory(Mcategory mcategory);
 
-	List<Mcategory> updateMcategory(Mcategory mcategory);
+	public int updateMcategory(Mcategory mcategory);
+
+	public void deleteMcategory(String mid);
 
 }

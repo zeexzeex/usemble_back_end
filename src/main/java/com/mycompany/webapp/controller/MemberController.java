@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -139,7 +138,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/category")
-	public List<Category> AllCategory(Model model) {
+	public List<Category> AllCategory() {
 		List<Category> categoryList = memberService.getCategory();
 		return categoryList;
 	}
@@ -380,10 +379,20 @@ public class MemberController {
 		return map;
 	}
 
-	@PatchMapping("/updateMcategory")
-	public List<Mcategory> updateMcategory(Mcategory mcategory) {
-		List<Mcategory> mcategoryList = memberService.updateMcategory(mcategory);
-		return mcategoryList;
+	@PostMapping("/updateMcategory")
+	public Map<String, String> updateMcategory(@RequestBody List<Mcategory> mcategory) {
+		memberService.updateMcategory(mcategory);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+
+		return map;
+	}
+
+	@DeleteMapping("/deleteMcategory")
+	public void deleteMcategory(String mid) {
+		log.info(mid);
+		memberService.deleteMcategory(mid);
 	}
 
 	@PostMapping("/putAgree")
