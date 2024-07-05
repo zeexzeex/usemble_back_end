@@ -246,6 +246,12 @@ public class SocialController {
 		return map;
 	}
 
+	@GetMapping("/applyAssemble")
+	public List<Social> applyAssemble(String mid) {
+		List<Social> socialList = socialService.getApplyAssemble(mid);
+		return socialList;
+	}
+
 	@GetMapping("/sjoin/list/{sno}")
 	public Map<String, Object> joinMemberList(@PathVariable int sno) {
 		List<Member> memberList = memberService.getJoinMember(sno);
