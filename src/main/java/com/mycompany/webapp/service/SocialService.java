@@ -160,14 +160,11 @@ public class SocialService {
 		return recruitHistory;
 	}
 
-<<<<<<< Updated upstream
-=======
 	public List<Social> getApplyAssemble(String mid) {
 		List<Social> socialList = socialDao.getApplyAssemble(mid);
 		return socialList;
 	}
 
->>>>>>> Stashed changes
 	public boolean isDeadline(int sno) {
 		Date deadline = socialDao.selectIsDeadlineBySno(sno);
 		boolean isDeadline = deadline.before(new Date());

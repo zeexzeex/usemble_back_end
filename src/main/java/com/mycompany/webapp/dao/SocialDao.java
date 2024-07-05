@@ -36,11 +36,8 @@ public interface SocialDao {
 
 	public List<Social> selectRecruitHistoryByPager(Map<String, Object> param);
 
-<<<<<<< Updated upstream
-=======
 	public List<Social> getApplyAssemble(String mid);
 
->>>>>>> Stashed changes
 	public Date selectIsDeadlineBySno(int sno);
 
 }
