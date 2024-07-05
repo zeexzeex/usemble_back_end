@@ -33,7 +33,7 @@
 		from(
 			select sno, stitle, saddress, sfee, ctno
 			from social
-			where <![CDATA[sdeadline > sysdate]]>
+			where <![CDATA[sdeadline > sysdate and sstatus not in ('cancel')]]>
 			<if test="ctno != null">
 			 and ctno=#{ctno}
 			</if>
@@ -81,6 +81,56 @@
 	select sno, mid, stitle, sstartdate, sstarttime, saddress, sfee, sstatus, sdeadline, smembercount
 	from social
 	where sno=#{sno}
+</select>
+
+<select id="selectJoinHistoryByPager" parameterType="Map" resultType="social">
+	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+	from(
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+		from(
+			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+			from social
+			where sstatus not in ('cancel') and sno in (
+				select sno
+				from sjoin
+				where mid=#{mid}
+			)
+			order by sdeadline desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectJoinHistoryCnt" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where sstatus not in ('cancel') and sno in (
+		select sno
+		from sjoin
+		where mid=#{mid}
+	)
+</select>
+
+<select id="selectRecruitHistoryByPager" parameterType="Map" resultType="social">
+	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+	from(
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+		from(
+			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+			from social
+			where sstatus not in ('cancel') and mid=#{mid}
+			order by sdeadline desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectRecruitHistoryCnt" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where sstatus not in ('cancel') and mid=#{mid}
 </select>
 
 </mapper>

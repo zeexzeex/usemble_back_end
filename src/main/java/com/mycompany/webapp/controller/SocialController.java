@@ -202,4 +202,42 @@ public class SocialController {
 
 		return map;
 	}
+
+	@GetMapping("/history/join")
+	public Map<String, Object> joinHistory(@RequestParam(defaultValue = "1") int jPageNo, String mid) {
+		int totalRows = socialService.getJoinHistoryCnt(mid);
+		Pager pager = new Pager(4, 5, totalRows, jPageNo);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+		param.put("pager", pager);
+
+		List<Social> joinHistory = socialService.getJoinHistory(param);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("joinHistory", joinHistory);
+		map.put("pager", pager);
+
+		return map;
+	}
+
+	@GetMapping("/history/recruit")
+	public Map<String, Object> recruitHistory(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
+		int totalRows = socialService.getRecruitHistoryCnt(mid);
+		Pager pager = new Pager(4, 5, totalRows, rPageNo);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+		param.put("pager", pager);
+
+		List<Social> recruitHistory = socialService.getRecruitHistory(param);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("recruitHistory", recruitHistory);
+		map.put("pager", pager);
+
+		return map;
+	}
 }

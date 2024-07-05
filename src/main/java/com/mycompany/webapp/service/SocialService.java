@@ -106,6 +106,7 @@ public class SocialService {
 		List<Social> mainSocial = socialDao.getMainSocial();
 		return mainSocial;
 	}
+
 	public int getSjoinCnt(int sno) {
 		int sjoinCnt = sjoinDao.count(sno);
 		return sjoinCnt;
@@ -137,6 +138,26 @@ public class SocialService {
 		} else {
 			int sjoinCnt = sjoinDao.deleteSjoin(sjoin);
 		}
+	}
+
+	public List<Social> getJoinHistory(Map<String, Object> param) {
+		List<Social> joinHistory = socialDao.selectJoinHistoryByPager(param);
+		return joinHistory;
+	}
+
+	public int getJoinHistoryCnt(String mid) {
+		int joinHistoryCnt = socialDao.selectJoinHistoryCnt(mid);
+		return joinHistoryCnt;
+	}
+
+	public int getRecruitHistoryCnt(String mid) {
+		int recruitHistoryCnt = socialDao.selectRecruitHistoryCnt(mid);
+		return recruitHistoryCnt;
+	}
+
+	public List<Social> getRecruitHistory(Map<String, Object> param) {
+		List<Social> recruitHistory = socialDao.selectRecruitHistoryByPager(param);
+		return recruitHistory;
 	}
 
 }

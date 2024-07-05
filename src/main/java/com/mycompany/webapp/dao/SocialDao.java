@@ -27,4 +27,12 @@ public interface SocialDao {
 
 	public Social selectSpayInfoBySno(int sno);
 
+	public List<Social> selectJoinHistoryByPager(Map<String, Object> param);
+
+	public int selectJoinHistoryCnt(String mid);
+
+	public int selectRecruitHistoryCnt(String mid);
+
+	public List<Social> selectRecruitHistoryByPager(Map<String, Object> param);
+
 }
