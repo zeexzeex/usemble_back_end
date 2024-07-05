@@ -71,9 +71,9 @@
 </update>
 
 <select id="getMainSocial" resultType="Social">
-	select sno, stitle, saddress, sfee, ctno
+	select sno, stitle, saddress, sfee, ctno, sstatus
 	from social
-	where <![CDATA[sdeadline > sysdate]]>
+	where <![CDATA[sdeadline > sysdate]]> and sstatus not in ('cancel')
 	order by sno desc
 </select>
 
