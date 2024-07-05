@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Sjoin;
 import com.mycompany.webapp.dto.Social;
+import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.SocialService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 public class SocialController {
 	@Autowired
 	SocialService socialService;
+
+	@Autowired
+	MemberService memberService;
 
 	@PostMapping("/write")
 	public Map<String, String> write(Social social) {
@@ -237,6 +242,39 @@ public class SocialController {
 		map.put("response", "success");
 		map.put("recruitHistory", recruitHistory);
 		map.put("pager", pager);
+
+		return map;
+	}
+
+	@GetMapping("/sjoin/list/{sno}")
+	public Map<String, Object> joinMemberList(@PathVariable int sno) {
+		List<Member> memberList = memberService.getJoinMember(sno);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("memberList", memberList);
+
+		return map;
+	}
+
+	@GetMapping("/deadline/{sno}")
+	public Map<String, Object> isDeadline(@PathVariable int sno) {
+		boolean isDeadline = socialService.isDeadline(sno);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("isDeadline", isDeadline);
+
+		return map;
+	}
+
+	@DeleteMapping("/sjoin/refuse")
+	public Map<String, Object> refuseJoinMember(Sjoin sjoin) {
+		socialService.cancelSjoin(sjoin);
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+
+		// TODO:거절 메시지 전달
 
 		return map;
 	}

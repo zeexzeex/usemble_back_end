@@ -1,5 +1,7 @@
 package com.mycompany.webapp.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.Member;
@@ -29,4 +31,6 @@ public interface MemberDao {
 	public int updateAgree(Member member);
 
 	public int putAgree(String mid);
+
+	public List<Member> getJoinMemberBySno(int sno);
 }

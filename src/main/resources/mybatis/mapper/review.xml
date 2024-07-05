@@ -11,5 +11,28 @@
 			where mid=#{mid}
 			)
 	</select>
+	<insert id="insert" parameterType="review">
+		insert into review(sno, mid, rcontent, rdate)
+		values(#{sno}, #{mid}, #{rcontent}, sysdate)
+	</insert>
+	<select id="selectIsReviewByParam" parameterType="review" resultType="boolean">
+		select count(*)
+		from review
+		where sno=#{sno} and mid=#{mid}
+	</select>
+	<select id="selectReviewByParam" parameterType="review" resultType="review">
+		select *
+		from review
+		where sno=#{sno} and mid=#{mid}
+	</select>
+	<update id="updateReview" parameterType="review">
+		update review
+		set rcontent=#{rcontent}
+		where mid=#{mid} and sno=#{sno}
+	</update>
+	<delete id="deleteReview" parameterType="review">
+		delete from review
+		where mid=#{mid} and sno=#{sno}
+	</delete>
 
 </mapper>

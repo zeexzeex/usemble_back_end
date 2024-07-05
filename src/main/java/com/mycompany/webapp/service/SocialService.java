@@ -160,4 +160,10 @@ public class SocialService {
 		return recruitHistory;
 	}
 
+	public boolean isDeadline(int sno) {
+		Date deadline = socialDao.selectIsDeadlineBySno(sno);
+		boolean isDeadline = deadline.before(new Date());
+		return isDeadline;
+	}
+
 }

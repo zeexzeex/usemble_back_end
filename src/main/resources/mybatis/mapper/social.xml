@@ -133,4 +133,10 @@
 	where sstatus not in ('cancel') and mid=#{mid}
 </select>
 
+<select id="selectIsDeadlineBySno" parameterType="int" resultType="Date">
+	select sdeadline
+	from social
+	where sno=#{sno}
+</select>
+
 </mapper>

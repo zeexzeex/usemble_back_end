@@ -179,4 +179,9 @@ public class MemberService {
 	public void deleteMcategory(String mid) {
 		mcategoryDao.deleteMcategory(mid);
 	}
+
+	public List<Member> getJoinMember(int sno) {
+		List<Member> memberList = memberDao.getJoinMemberBySno(sno);
+		return memberList;
+	}
 }

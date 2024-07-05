@@ -68,4 +68,13 @@
 	<update id="putAgree" parameterType="String">
 		update member set agree=#{agree} where mid=#{mid}
 	</update>
+	<select id="getJoinMemberBySno" parameterType="int" resultType="member">
+		select mid, mname, msex, mbirth
+		from member 
+		where mid in (
+			select mid
+			from sjoin
+			where sno=#{sno}
+		)
+	</select>
 </mapper>

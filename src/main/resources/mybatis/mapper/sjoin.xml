@@ -21,4 +21,6 @@
 	<delete id="deleteSjoin" parameterType="sjoin">
 		delete from sjoin where mid=#{mid} and sno=#{sno}
 	</delete>
+	
+	
 </mapper>

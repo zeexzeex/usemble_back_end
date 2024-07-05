@@ -1,5 +1,6 @@
 package com.mycompany.webapp.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,5 +35,7 @@ public interface SocialDao {
 	public int selectRecruitHistoryCnt(String mid);
 
 	public List<Social> selectRecruitHistoryByPager(Map<String, Object> param);
+
+	public Date selectIsDeadlineBySno(int sno);
 
 }
