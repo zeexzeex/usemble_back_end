@@ -1,5 +1,8 @@
 package com.mycompany.webapp.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.Review;
@@ -18,5 +21,9 @@ public interface ReviewDao {
 	public int updateReview(Review review);
 
 	public int deleteReview(Review review);
+
+	public List<Map<String, Object>> selectRecieveReviewByMid(Map<String, Object> param);
+
+	public int countRecieveReview(String mid);
 
 }

@@ -34,5 +34,41 @@
 		delete from review
 		where mid=#{mid} and sno=#{sno}
 	</delete>
-
+	
+	<resultMap type="HashMap" id="reviewForm">
+	  <result property="sno" column="sno" />
+	  <result property="mid" column="mid" />
+	  <result property="mname" column="mname" />
+	  <result property="stitle" column="stitle" />
+	  <result property="sstartDate" column="sstartDate" />
+	  <result property="rcontent" column="rcontent" javaType="String" jdbcType="CLOB" />
+	  <result property="rdate" column="rdate" />
+	</resultMap>
+	
+	<select id="selectRecieveReviewByMid" parameterType="Map" resultMap="reviewForm">
+		select rnum, sno, mname, sstartdate, stitle, mid, rcontent, rdate
+		from(
+			select rownum as rnum, sno, mname, stitle, sstartdate, mid, rcontent, rdate
+			from(
+				select review.sno, review.mid, member.mname, social.stitle, social.sstartdate, rcontent, rdate
+				from review, social, member
+				where member.mid=review.mid and review.sno=social.sno and review.sno in (
+				    select sno
+				    from social
+				    where social.mid=#{mid} and social.sstatus not in ('cancel')
+				)
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]> 
+	</select>
+	<select id="countRecieveReview" parameterType="String" resultType="int">
+		select count(*)
+		from review
+		where sno in (
+			select sno
+			from social
+			where mid=#{mid}
+		)
+	</select>
 </mapper>

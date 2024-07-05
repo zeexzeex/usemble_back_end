@@ -147,4 +147,5 @@
 	where sno=#{sno}
 </select>
 
+
 </mapper>

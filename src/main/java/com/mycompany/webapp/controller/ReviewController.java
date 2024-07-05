@@ -1,6 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Review;
 import com.mycompany.webapp.service.ReviewService;
 
@@ -77,6 +80,27 @@ public class ReviewController {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("response", "success");
+
+		return map;
+	}
+
+	@GetMapping("/recieve")
+	public Map<String, Object> recieveReview(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
+		int totalRows = reviewService.getRecieveReviewCnt(mid);
+
+		Pager pager = new Pager(4, 5, totalRows, rPageNo);
+
+		Map<String, Object> param = new HashMap<>();
+
+		param.put("mid", mid);
+		param.put("pager", pager);
+
+		List<Map<String, Object>> reviewList = reviewService.getRecieveReviewList(param);
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("response", "success");
+		map.put("reviewList", reviewList);
 
 		return map;
 	}

@@ -225,7 +225,7 @@ public class MemberController {
 	@GetMapping("/reviewCnt")
 	public int reviewCnt(String mid) {
 		// 리뷰 받은 수 가져오기
-		int reviewCnt = reviewService.getReviewCnt(mid);
+		int reviewCnt = reviewService.getRecieveReviewCnt(mid);
 		return reviewCnt;
 	}
 
