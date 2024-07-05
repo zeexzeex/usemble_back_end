@@ -133,8 +133,6 @@
 	where sstatus not in ('cancel') and mid=#{mid}
 </select>
 
-<<<<<<< Updated upstream
-=======
 <select id="getApplyAssemble" parameterType="String" resultType="Social">
 	select sno, stitle, saddress, sfee, sstatus, sdeadline
     from social
@@ -143,7 +141,6 @@
           order by sdeadline desc
 </select>
 
->>>>>>> Stashed changes
 <select id="selectIsDeadlineBySno" parameterType="int" resultType="Date">
 	select sdeadline
 	from social
