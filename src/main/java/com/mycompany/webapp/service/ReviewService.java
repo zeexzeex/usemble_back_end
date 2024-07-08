@@ -3,6 +3,8 @@ package com.mycompany.webapp.service;
 import java.util.List;
 import java.util.Map;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import com.mycompany.webapp.dao.ReviewDao;
 import com.mycompany.webapp.dto.Review;
 
 import lombok.extern.slf4j.Slf4j;
+import com.mycompany.webapp.dto.Pager;
+
 
 @Slf4j
 @Service
@@ -57,6 +61,14 @@ public class ReviewService {
 	public List<Map<String, Object>> getLeaveReviewList(Map<String, Object> param) {
 		List<Map<String, Object>> reviewList = reviewDao.selectLeaveReviewByMid(param);
 		return reviewList;
+	}
+
+	public int getCount() {
+		return reviewDao.countAll();
+	}
+
+	public List<Review> getList(Pager pager) {
+		return reviewDao.selectByPage(pager);
 	}
 
 }

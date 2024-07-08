@@ -3,8 +3,13 @@ package com.mycompany.webapp.dao;
 import java.util.List;
 import java.util.Map;
 
+
+
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.Review;
+
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Review;
 
 @Mapper
@@ -29,5 +34,9 @@ public interface ReviewDao {
 	public int countLeaveReview(String mid);
 
 	public List<Map<String, Object>> selectLeaveReviewByMid(Map<String, Object> param);
+
+	public int countAll();
+
+	public List<Review> selectByPage(Pager pager);
 
 }
