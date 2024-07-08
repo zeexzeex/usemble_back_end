@@ -100,6 +100,29 @@ public class ReviewController {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("response", "success");
+		map.put("pager", pager);
+		map.put("reviewList", reviewList);
+
+		return map;
+	}
+
+	@GetMapping("/leave")
+	public Map<String, Object> leaveReview(@RequestParam(defaultValue = "1") int lPageNo, String mid) {
+		int totalRows = reviewService.getLeaveReviewCnt(mid);
+
+		Pager pager = new Pager(4, 5, totalRows, lPageNo);
+
+		Map<String, Object> param = new HashMap<>();
+
+		param.put("mid", mid);
+		param.put("pager", pager);
+
+		List<Map<String, Object>> reviewList = reviewService.getLeaveReviewList(param);
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("response", "success");
+		map.put("pager", pager);
 		map.put("reviewList", reviewList);
 
 		return map;

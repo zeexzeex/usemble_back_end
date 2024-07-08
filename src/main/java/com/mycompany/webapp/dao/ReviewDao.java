@@ -26,4 +26,8 @@ public interface ReviewDao {
 
 	public int countRecieveReview(String mid);
 
+	public int countLeaveReview(String mid);
+
+	public List<Map<String, Object>> selectLeaveReviewByMid(Map<String, Object> param);
+
 }

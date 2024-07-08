@@ -71,4 +71,23 @@
 			where mid=#{mid}
 		)
 	</select>
+	<select id="countLeaveReview" parameterType="String" resultType="int">
+		select count(*)
+		from review
+		where mid=#{mid}
+	</select>
+	
+	<select id="selectLeaveReviewByMid" parameterType="Map" resultMap="reviewForm">
+		select rnum, sno, mname, sstartdate, stitle, mid, rcontent, rdate
+		from(
+			select rownum as rnum, sno, mname, stitle, sstartdate, mid, rcontent, rdate
+			from(
+				select review.sno, review.mid, member.mname, social.stitle, social.sstartdate, rcontent, rdate
+				from review, social, member
+				where member.mid=review.mid and review.sno=social.sno and review.mid = #{mid}
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]> 
+	</select>
 </mapper>

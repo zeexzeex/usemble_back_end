@@ -49,4 +49,14 @@ public class ReviewService {
 		return recieveReivewCnt;
 	}
 
+	public int getLeaveReviewCnt(String mid) {
+		int leaveReviewCnt = reviewDao.countLeaveReview(mid);
+		return leaveReviewCnt;
+	}
+
+	public List<Map<String, Object>> getLeaveReviewList(Map<String, Object> param) {
+		List<Map<String, Object>> reviewList = reviewDao.selectLeaveReviewByMid(param);
+		return reviewList;
+	}
+
 }
