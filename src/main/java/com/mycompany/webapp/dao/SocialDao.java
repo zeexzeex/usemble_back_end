@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Social;
 
 @Mapper
@@ -41,4 +42,8 @@ public interface SocialDao {
 	public Date selectIsDeadlineBySno(int sno);
 
 	public List<Social> selectSearchByStitle(String keyword);
+	public List<Social> selectByPage(Pager pager);
+
+	public int countAll();
+
 }

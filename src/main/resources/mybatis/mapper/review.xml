@@ -90,4 +90,29 @@
 		)
 		where <![CDATA[ rnum >= #{pager.startRowNo}]]> 
 	</select>
+	<select id="countAll" resultType="int">
+		select count(*)
+		from review
+	</select>
+	
+
+
+<select id="selectByPage" parameterType="pager" resultMap="reviewForm">
+        <![CDATA[
+        SELECT rnum, mid, rcontent, rdate, stitle, sno
+        FROM (
+            SELECT rownum AS rnum, mid, rcontent, rdate, stitle, sno
+            FROM (
+                SELECT review.mid, review.rcontent, review.rdate, social.stitle , review.sno
+                FROM review 
+                JOIN social ON review.sno = social.sno
+                ORDER BY review.rdate DESC
+            ) 
+            WHERE rownum <= #{endRowNo}
+        ) 
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+	
+
 </mapper>

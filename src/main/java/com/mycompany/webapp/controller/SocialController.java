@@ -206,6 +206,15 @@ public class SocialController {
 		map.put("response", "success");
 
 		return map;
+
+	}
+
+	@GetMapping("/sjoin/apply")
+	public Map<String, String> applySjoin(Sjoin sjoin) {
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+
+		return map;
 	}
 
 	@GetMapping("/history/join")

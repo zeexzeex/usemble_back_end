@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.SjoinDao;
 import com.mycompany.webapp.dao.SocialDao;
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Sjoin;
 import com.mycompany.webapp.dto.Social;
 
@@ -176,4 +177,12 @@ public class SocialService {
 
 		return searchList;
 	}
+	public int getCount() {
+		return socialDao.countAll();
+	}
+
+	public List<Social> getList(Pager pager) {
+		return socialDao.selectByPage(pager);
+	}
+
 }

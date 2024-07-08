@@ -68,6 +68,28 @@
 	<update id="putAgree" parameterType="String">
 		update member set agree=#{agree} where mid=#{mid}
 	</update>
+	<select id="selectByPage" parameterType="pager" resultType="member">
+	<![CDATA[ 
+	select rnum, mname, mid, msex, mdate
+	from(
+		select rownum as rnum, mname, mid, msex, mdate
+		from(
+			select mname, mid, msex, mdate
+			from member
+			order by mdate desc	
+		)
+		where rownum <= #{endRowNo}
+	)
+	where rnum >= #{startRowNo}
+	]]>
+</select>
+<select id="countAll" resultType="int">
+      select count(*) from member
+   </select>
+	
+	
+	
+	
 	<select id="getJoinMemberBySno" parameterType="int" resultType="member">
 		select mid, mname, msex, mbirth
 		from member 
