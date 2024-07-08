@@ -42,6 +42,8 @@ public interface SocialDao {
 	public Date selectIsDeadlineBySno(int sno);
 
 	public List<Social> selectSearchByStitle(String keyword);
+
+	public List<Social> getMainCateSocial(String mid);
 	public List<Social> selectByPage(Pager pager);
 
 	public int countAll();

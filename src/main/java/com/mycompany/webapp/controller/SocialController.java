@@ -310,4 +310,9 @@ public class SocialController {
 		return map;
 	}
 
+	@GetMapping("/mainCateSocial")
+	public List<Social> mainCateSocial(String mid) {
+		List<Social> socialList = socialService.getMainCateSocial(mid);
+		return socialList;
+	}
 }

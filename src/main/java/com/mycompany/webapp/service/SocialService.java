@@ -177,6 +177,11 @@ public class SocialService {
 
 		return searchList;
 	}
+
+	public List<Social> getMainCateSocial(String mid) {
+		List<Social> socialList = socialDao.getMainCateSocial(mid);
+		return socialList;
+	}
 	public int getCount() {
 		return socialDao.countAll();
 	}
