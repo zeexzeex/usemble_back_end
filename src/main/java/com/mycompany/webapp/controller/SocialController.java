@@ -284,4 +284,21 @@ public class SocialController {
 
 		return map;
 	}
+
+	// 검색기능
+	@GetMapping("/search")
+	public Map<String, Object> searchList(@RequestParam(required = false) String keyword) {
+		List<Social> list = socialService.getSearchList(keyword);
+		Map<String, Object> map = new HashMap<>();
+
+		// 데이터를 맵에 저장
+
+		map.put("response", "success");
+		map.put("keyword", keyword);
+		map.put("searchSocialList", list);
+		log.info("map: {}", map);
+
+		return map;
+	}
+
 }

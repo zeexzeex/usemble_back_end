@@ -40,4 +40,5 @@ public interface SocialDao {
 
 	public Date selectIsDeadlineBySno(int sno);
 
+	public List<Social> selectSearchByStitle(String keyword);
 }

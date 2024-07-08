@@ -171,4 +171,9 @@ public class SocialService {
 		return isDeadline;
 	}
 
+	public List<Social> getSearchList(String keyword) {
+		List<Social> searchList = socialDao.selectSearchByStitle(keyword);
+
+		return searchList;
+	}
 }
