@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.Member;
+import com.mycompany.webapp.dto.Pager;
 
 @Mapper
 public interface MemberDao {
@@ -31,6 +32,10 @@ public interface MemberDao {
 	public int updateAgree(Member member);
 
 	public int putAgree(String mid);
+
+	public int countAll();
+
+	public List<Member> selectByPage(Pager pager);
 
 	public List<Member> getJoinMemberBySno(int sno);
 }

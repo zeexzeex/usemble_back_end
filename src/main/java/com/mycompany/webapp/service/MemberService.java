@@ -18,6 +18,7 @@ import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Mlike;
+import com.mycompany.webapp.dto.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -183,5 +184,14 @@ public class MemberService {
 	public List<Member> getJoinMember(int sno) {
 		List<Member> memberList = memberDao.getJoinMemberBySno(sno);
 		return memberList;
+	}
+
+	public List<Member> getList(Pager pager) {
+
+		return memberDao.selectByPage(pager);
+	}
+
+	public int getCount() {
+		return memberDao.countAll();
 	}
 }
