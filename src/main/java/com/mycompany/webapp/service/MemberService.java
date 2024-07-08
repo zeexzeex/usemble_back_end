@@ -10,10 +10,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mycompany.webapp.dao.AlarmDao;
 import com.mycompany.webapp.dao.CategoryDao;
 import com.mycompany.webapp.dao.McategoryDao;
 import com.mycompany.webapp.dao.MemberDao;
 import com.mycompany.webapp.dao.MlikeDao;
+import com.mycompany.webapp.dto.Alarm;
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
@@ -36,6 +38,9 @@ public class MemberService {
 
 	@Autowired
 	McategoryDao mcategoryDao;
+
+	@Autowired
+	AlarmDao alarmDao;
 
 	public List<String> getLikeList(Map<String, Object> map) {
 		List<String> likeList = mlikeDao.selectLikeListByMid(map);
@@ -193,5 +198,33 @@ public class MemberService {
 
 	public int getCount() {
 		return memberDao.countAll();
+	}
+
+	public void sendAlarm(String mid, String message) {
+		Alarm alarm = new Alarm();
+		alarm.setMid(mid);
+		alarm.setMessage(message);
+		alarm.setAcheck(false);
+
+		int cnt = alarmDao.insert(alarm);
+	}
+
+	public int getAlarmCntByMid(String mid) {
+		int alarmCnt = alarmDao.countAlarmByMid(mid);
+		return alarmCnt;
+	}
+
+	public List<Alarm> getAlarmList(Map<String, Object> param) {
+		List<Alarm> alarmList = alarmDao.selectAlarmByPager(param);
+		return alarmList;
+	}
+
+	public void checkAlarm(int ano) {
+		alarmDao.updateAlarmByAno(ano);
+	}
+
+	public boolean isAlarm(String mid) {
+		boolean isAlarm = alarmDao.getAlarmStateByMid(mid);
+		return isAlarm;
 	}
 }

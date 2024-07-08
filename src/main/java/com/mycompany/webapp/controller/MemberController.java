@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.Alarm;
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Mcategory;
 import com.mycompany.webapp.dto.Member;
@@ -401,6 +402,46 @@ public class MemberController {
 
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
+
+		return map;
+	}
+
+	@GetMapping("/alarm")
+	public Map<String, Object> getAlarm(@RequestParam(defaultValue = "1") int pageNo, String mid) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+
+		int totalRows = memberService.getAlarmCntByMid(mid);
+		Pager pager = new Pager(5, 5, totalRows, pageNo);
+
+		param.put("pager", pager);
+		List<Alarm> alarmList = memberService.getAlarmList(param);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("alarmList", alarmList);
+		map.put("pager", pager);
+
+		return map;
+	}
+
+	@PatchMapping("/alarm/check")
+	public Map<String, String> checkAlarm(int ano) {
+		memberService.checkAlarm(ano);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("response", "success");
+
+		return map;
+	}
+
+	@GetMapping("/alarm/state")
+	public Map<String, Object> isAlarm(String mid) {
+		boolean isAlarm = memberService.isAlarm(mid);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("response", "success");
+		map.put("isAlarm", isAlarm);
 
 		return map;
 	}

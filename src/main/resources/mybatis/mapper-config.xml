@@ -19,5 +19,6 @@
 		<typeAlias alias="sjoin" type="com.mycompany.webapp.dto.Sjoin" />
 		<typeAlias alias="social" type="com.mycompany.webapp.dto.Social" />
 		<typeAlias alias="image" type="com.mycompany.webapp.dto.Image" />
+		<typeAlias alias="alarm" type="com.mycompany.webapp.dto.Alarm" />
 	</typeAliases>
 </configuration>

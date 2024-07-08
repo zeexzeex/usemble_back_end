@@ -38,4 +38,5 @@ public interface MemberDao {
 	public List<Member> selectByPage(Pager pager);
 
 	public List<Member> getJoinMemberBySno(int sno);
+
 }

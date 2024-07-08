@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -118,8 +119,16 @@ public class SocialController {
 		param.put("sstatus", sstatus);
 		socialService.updateStatus(param);
 
-		Map<String, String> map = new HashMap<>();
+		if (sstatus == "cancel" || sstatus == "delete") {
+			List<Member> memberList = memberService.getJoinMember(sno);
+			Social social = socialService.getSpayInfo(sno);
+			Iterator<Member> iter = memberList.iterator();
+			while (iter.hasNext()) {
+				memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
+			}
+		}
 
+		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
 
 		return map;
@@ -200,9 +209,11 @@ public class SocialController {
 
 	@DeleteMapping("/sjoin/cancel")
 	public Map<String, String> cancelSjoin(Sjoin sjoin) {
-		Map<String, String> map = new HashMap<>();
-
 		socialService.cancelSjoin(sjoin);
+		Social social = socialService.getSpayInfo(sjoin.getSno());
+
+		memberService.sendAlarm(social.getMid(), sjoin.getMid() + "가 어셈블 참가를 취소했습니다. :(\n");
+		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
 
 		return map;
@@ -286,10 +297,13 @@ public class SocialController {
 	@DeleteMapping("/sjoin/refuse")
 	public Map<String, Object> refuseJoinMember(Sjoin sjoin) {
 		socialService.cancelSjoin(sjoin);
+		Social social = socialService.getSpayInfo(sjoin.getSno());
+
+		memberService.sendAlarm(sjoin.getMid(), social.getStitle() + " 호스트가 어셈블 참가를 거절했습니다. :(\n" + "환불된 금액: "
+				+ String.format("%,d", social.getSfee()) + "원");
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("response", "success");
-
-		// TODO:거절 메시지 전달
 
 		return map;
 	}
