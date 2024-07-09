@@ -45,7 +45,7 @@ public class NoticeController {
 	public Notice update(@RequestBody Notice notice) {
 		noticeService.update(notice);
 		notice = noticeService.getNotice(notice.getNno());
-		log.info(notice.toString());
+
 		return notice;
 	}
 
