@@ -191,4 +191,24 @@ public class SocialService {
 		return socialDao.selectByPage(pager);
 	}
 
+	public List<Social> getRecruitAssemble(String mid) {
+		List<Social> socialList = socialDao.getRecruitAssemble(mid);
+		return socialList;
+	}
+
+	public List<Social> getRecruitedAssemble(String mid) {
+		List<Social> socialList = socialDao.getRecruitedAssemble(mid);
+		return socialList;
+	}
+
+	public List<Social> getInprograss(String mid) {
+		List<Social> socialList = socialDao.getInprograss(mid);
+		return socialList;
+	}
+
+	public List<Social> getPrograssed(String mid) {
+		List<Social> socialList = socialDao.getPrograssed(mid);
+		return socialList;
+	}
+
 }

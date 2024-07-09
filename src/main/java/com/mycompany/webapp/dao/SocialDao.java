@@ -44,8 +44,17 @@ public interface SocialDao {
 	public List<Social> selectSearchByStitle(String keyword);
 
 	public List<Social> getMainCateSocial(String mid);
+
 	public List<Social> selectByPage(Pager pager);
 
 	public int countAll();
+
+	public List<Social> getRecruitAssemble(String mid);
+
+	public List<Social> getRecruitedAssemble(String mid);
+
+	public List<Social> getInprograss(String mid);
+
+	public List<Social> getPrograssed(String mid);
 
 }

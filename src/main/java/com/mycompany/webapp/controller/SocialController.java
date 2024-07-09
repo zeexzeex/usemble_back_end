@@ -335,4 +335,29 @@ public class SocialController {
 		List<Social> socialList = socialService.getMainCateSocial(mid);
 		return socialList;
 	}
+
+	@GetMapping("/recruitAssemble")
+	public List<Social> recruit(String mid) {
+		List<Social> socialList = socialService.getRecruitAssemble(mid);
+		return socialList;
+	}
+
+	@GetMapping("/recruitedAssemble")
+	public List<Social> recruited(String mid) {
+		List<Social> socialList = socialService.getRecruitedAssemble(mid);
+		return socialList;
+	}
+
+	@GetMapping("/inprograss")
+	public List<Social> inprograss(String mid) {
+		List<Social> socialList = socialService.getInprograss(mid);
+		return socialList;
+	}
+
+	@GetMapping("/prograssed")
+	public List<Social> prograssed(String mid) {
+		List<Social> socialList = socialService.getPrograssed(mid);
+		return socialList;
+	}
+
 }
