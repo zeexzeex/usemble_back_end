@@ -192,7 +192,7 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
         and <![CDATA[sdeadline > sysdate]]>
     )
     where <![CDATA[rn <= 4]]>
-    order by swritedate desc
+    order by sno desc
 </select>
 
 <select id="getRecruitAssemble" parameterType="String" resultType="Social">
