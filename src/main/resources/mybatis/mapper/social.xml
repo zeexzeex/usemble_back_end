@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.SocialDao">
-<select id="count" parameterType="String" resultType="int">
-	select count(*)
-	from social
-	where mid=#{mid}
-</select>
-
 <insert id="insert" parameterType="social">
 	<selectKey keyProperty="sno" resultType="int" order="BEFORE">
 			select seq_sno.nextval from dual
@@ -156,7 +150,7 @@
 	and stitle like '%${keyword}%'
 	and sdeadline > TRUNC(SYSDATE)
 </select>
-<select id="countAll" resultType="int">
+	<select id="countAll" resultType="int">
 		select count(*) from social
 	</select>
 	<select id="selectByPage" parameterType="pager" resultType="social">
@@ -174,8 +168,6 @@
 	where rnum >= #{startRowNo}
 	]]>
 </select>
-
-
 
 <select id="getMainCateSocial" parameterType="String" resultType="Social">
 select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
@@ -220,4 +212,63 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 	where <![CDATA[sdeadline < sysdate]]> and sstatus not in ('cancel') 
 		and mid=#{mid}
 </select>
+
+<resultMap type="HashMap" id="socialAdminForm">
+  <result property="sno" column="sno" />
+  <result property="stitle" column="stitle" />
+  <result property="ctname" column="ctname"/>
+  <result property="saddress" column="saddress"/>
+  <result property="swriteDate" column="swriteDate" />
+  <result property="sstartDate" column="sstartDate" />
+  <result property="sstartTime" column="sstartTime" />
+  <result property="sstatus" column="sstatus" />
+  <result property="sstartdate" column="sstartdate" />
+  <result property="sdeadline" column="sdeadline" />
+  <result property="sfee" column="sfee" />
+  <result property="smemberCount" column="smemberCount" />
+  <result property="curjoin" column="curjoin" />
+</resultMap>
+
+<select id="selectRecruitInAdminByPager" parameterType="Map" resultMap="socialAdminForm">
+	select rnum, sno, stitle, saddress, sfee, ctname, 
+	sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+	from(
+		select rownum as rnum, sno, stitle, saddress, 
+		sfee, ctname, sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+		from(
+			select social.sno, stitle, saddress, sfee, ctname, sstatus, 
+			sdeadline, smembercount, sstartdate, swritedate, sstarttime, (select count(*) from sjoin where sjoin.sno=social.sno) as curjoin
+			from social, category
+			where social.mid=#{mid} and category.ctno = social.ctno
+			order by sdeadline desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectJoinInAdminByPager" parameterType="Map" resultMap="socialAdminForm">
+	select rnum, sno, stitle, saddress, sfee, ctname, 
+	sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+	from(
+		select rownum as rnum, sno, stitle, saddress, 
+		sfee, ctname, sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+		from(
+			select social.sno, stitle, saddress, sfee, ctname, sstatus, 
+			sdeadline, smembercount, sstartdate, swritedate, sstarttime, (select count(*) from sjoin where sjoin.sno=social.sno) as curjoin
+			from social, category, sjoin
+			where sjoin.mid=#{mid} and category.ctno = social.ctno and sjoin.sno = social.sno
+			order by sdeadline desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="countAllByMid" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where mid=#{mid}
+</select>
+
 </mapper>

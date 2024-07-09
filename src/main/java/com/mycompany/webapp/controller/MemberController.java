@@ -219,7 +219,7 @@ public class MemberController {
 	@GetMapping("/socialCnt")
 	public int socialCnt(String mid) {
 		// 소셜 작성 수 가져오기
-		int socialCnt = socialService.getSocialCnt(mid);
+		int socialCnt = socialService.getRecruitHistoryCnt(mid);
 		return socialCnt;
 	}
 

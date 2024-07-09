@@ -11,8 +11,6 @@ import com.mycompany.webapp.dto.Social;
 
 @Mapper
 public interface SocialDao {
-	public int count(String mid);
-
 	public void insert(Social social);
 
 	public Social selectBySno(int sno);
@@ -56,5 +54,11 @@ public interface SocialDao {
 	public List<Social> getInprograss(String mid);
 
 	public List<Social> getPrograssed(String mid);
+
+	public int countAllByMid(String mid);
+
+	public List<Map<String, Object>> selectRecruitInAdminByPager(Map<String, Object> param);
+
+	public List<Map<String, Object>> selectJoinInAdminByPager(Map<String, Object> param);
 
 }
