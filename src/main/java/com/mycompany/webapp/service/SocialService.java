@@ -25,8 +25,8 @@ public class SocialService {
 	@Autowired
 	SjoinDao sjoinDao;
 
-	public int getSocialCnt(String mid) {
-		int socialCnt = socialDao.count(mid);
+	public int getMemberSocialCntAll(String mid) {
+		int socialCnt = socialDao.countAllByMid(mid);
 
 		return socialCnt;
 	}
@@ -189,6 +189,16 @@ public class SocialService {
 
 	public List<Social> getList(Pager pager) {
 		return socialDao.selectByPage(pager);
+	}
+
+	public List<Map<String, Object>> getRecruitSocialPageInAdmin(Map<String, Object> param) {
+		List<Map<String, Object>> socialList = socialDao.selectRecruitInAdminByPager(param);
+		return socialList;
+	}
+
+	public List<Map<String, Object>> getJoinSocialPageInAdmin(Map<String, Object> param) {
+		List<Map<String, Object>> socialList = socialDao.selectJoinInAdminByPager(param);
+		return socialList;
 	}
 
 	public List<Social> getRecruitAssemble(String mid) {
