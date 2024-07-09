@@ -227,4 +227,9 @@ public class MemberService {
 		boolean isAlarm = alarmDao.getAlarmStateByMid(mid);
 		return isAlarm;
 	}
+
+	public Member getMemberInfo(String mid) {
+		Member member = memberDao.selectMemberAdminByMid(mid);
+		return member;
+	}
 }

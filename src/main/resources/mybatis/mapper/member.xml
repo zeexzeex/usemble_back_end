@@ -70,11 +70,11 @@
 	</update>
 	<select id="selectByPage" parameterType="pager" resultType="member">
 	<![CDATA[ 
-		select rnum, mname, mid, msex, mdate
+		select rnum, mname, mid, msex, mdate, menabled
 		from(
-			select rownum as rnum, mname, mid, msex, mdate
+			select rownum as rnum, mname, mid, msex, mdate, menabled
 			from(
-				select mname, mid, msex, mdate
+				select mname, mid, msex, mdate, menabled
 				from member
 				order by mdate desc	
 			)
@@ -94,5 +94,15 @@
 			from sjoin
 			where sno=#{sno}
 		)
+	</select>
+	<update id="updateMemberEnableByMid" parameterType="Member">
+		update member
+		set menabled=#{menabled}
+		where mid=#{mid}
+	</update>
+	<select id="selectMemberAdminByMid" parameterType="String" resultType="member">
+		select mid, mname, mphone, msex, mbirth, mbankname, mpayaccount, menabled
+		from member
+		where mid=#{mid}
 	</select>
 </mapper>

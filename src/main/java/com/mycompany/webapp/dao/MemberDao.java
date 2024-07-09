@@ -39,4 +39,8 @@ public interface MemberDao {
 
 	public List<Member> getJoinMemberBySno(int sno);
 
+	public int updateMemberEnableByMid(Member member);
+
+	public Member selectMemberAdminByMid(String mid);
+
 }
