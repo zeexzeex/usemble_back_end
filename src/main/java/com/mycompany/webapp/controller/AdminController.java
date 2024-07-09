@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Member;
+import com.mycompany.webapp.dto.Notice;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Review;
 import com.mycompany.webapp.dto.Social;
 import com.mycompany.webapp.service.MemberService;
+import com.mycompany.webapp.service.NoticeService;
 import com.mycompany.webapp.service.ReviewService;
 import com.mycompany.webapp.service.SocialService;
 
@@ -33,6 +35,9 @@ public class AdminController {
 
 	@Autowired
 	private ReviewService reviewService;
+
+	@Autowired
+	private NoticeService noticeService;
 
 	@GetMapping("/memberList")
 	public Map<String, Object> listMember(@RequestParam(defaultValue = "1") int pageNo) {
@@ -77,6 +82,21 @@ public class AdminController {
 		map.put("pager", pager);
 
 		log.info(list.toString());
+		return map;
+	}
+
+	@GetMapping("/noticeList")
+	public Map<String, Object> listNotice(@RequestParam(defaultValue = "1") int pageNo) {
+
+		int totalRows = noticeService.getCount();
+
+		Pager pager = new Pager(10, 5, totalRows, pageNo);
+		List<Notice> list = noticeService.getList(pager);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("notices", list);
+		map.put("pager", pager);
+
 		return map;
 	}
 

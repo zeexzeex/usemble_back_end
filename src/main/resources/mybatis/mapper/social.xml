@@ -156,6 +156,26 @@
 	and stitle like '%${keyword}%'
 	and sdeadline > TRUNC(SYSDATE)
 </select>
+<select id="countAll" resultType="int">
+		select count(*) from social
+	</select>
+	<select id="selectByPage" parameterType="pager" resultType="social">
+	<![CDATA[ 
+	select rnum, sno, stitle, mid, swritedate, sstatus
+	from(
+		select rownum as rnum, sno, stitle, mid, swritedate, sstatus
+		from(
+			select sno, stitle, mid, swritedate, sstatus
+			from social
+			order by swritedate desc	
+		)
+		where rownum <= #{endRowNo}
+	)
+	where rnum >= #{startRowNo}
+	]]>
+</select>
+
+
 
 <select id="getMainCateSocial" parameterType="String" resultType="Social">
 select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
