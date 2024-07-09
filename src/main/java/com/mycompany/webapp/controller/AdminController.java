@@ -188,9 +188,16 @@ public class AdminController {
 
 	@DeleteMapping("/review/delete")
 	public Map<String, Object> deleteReview(Review review) {
-		reviewService.deleteReview(review);
-
 		Map<String, Object> map = new HashMap<>();
+		if (review.getSno() == 0) {
+			map.put("response", "fail");
+
+			return map;
+		}
+
+		reviewService.deleteReview(review);
+		Social social = socialService.getSpayInfo(review.getSno());
+		memberService.sendAlarm(review.getMid(), "관리자에 의해 " + social.getStitle() + " 리뷰가 삭제 처리되었습니다. :(\n");
 
 		map.put("response", "success");
 
