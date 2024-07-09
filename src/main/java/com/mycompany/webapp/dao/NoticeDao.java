@@ -18,4 +18,8 @@ public interface NoticeDao {
 
 	public Notice selectNoticeByNno(int nno);
 
+	public int updateByNno(Notice notice);
+
+	public int deleteByNno(int nno);
+
 }

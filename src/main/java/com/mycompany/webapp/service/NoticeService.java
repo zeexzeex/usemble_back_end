@@ -32,4 +32,19 @@ public class NoticeService {
 		return notice;
 	}
 
+	public int update(Notice notice) {
+
+		return noticeDao.updateByNno(notice);
+
+	}
+
+	public Notice getNotice(int nno) {
+		Notice notice = noticeDao.selectNoticeByNno(nno);
+		return notice;
+	}
+
+	public int delete(int nno) {
+		return noticeDao.deleteByNno(nno);
+	}
+
 }

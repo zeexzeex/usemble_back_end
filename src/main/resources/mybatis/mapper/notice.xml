@@ -12,24 +12,31 @@
 		select count(*) from notice
 	</select>
 	<select id="selectByPage" parameterType="pager" resultType="notice">
-	<![CDATA[ 
-	select rnum, mid, nno, ntitle, ncontent, ndate
-	from(
-		select rownum as rnum, mid, nno, ntitle, ncontent, ndate
+		<![CDATA[ 
+		select rnum, mid, nno, ntitle, ncontent, ndate
 		from(
+			select rownum as rnum, mid, nno, ntitle, ncontent, ndate
+			from(
+				select mid, nno, ntitle, ncontent, ndate
+				from notice
+				order by ndate desc	
+			)
+			where rownum <= #{endRowNo}
+		)
+		where rnum >= #{startRowNo}
+		]]>
+	</select>
+	<select id="selectNoticeByNno" parameterType="int" resultType="notice">
 			select mid, nno, ntitle, ncontent, ndate
 			from notice
-			order by ndate desc	
-		)
-		where rownum <= #{endRowNo}
-	)
-	where rnum >= #{startRowNo}
-	]]>
-</select>
-<select id="selectNoticeByNno" parameterType="int" resultType="notice">
-		select mid, nno, ntitle, ncontent, ndate
-		from notice
-		where nno=#{nno} 
+			where nno=#{nno} 
 	</select>
+	<update id="updateByNno" parameterType="notice">
+		update notice set ntitle=#{ntitle}, ncontent=#{ncontent}
+		where nno=#{nno}
+	</update>
+	<delete id="deleteByNno" parameterType="int">
+      delete from notice where nno=#{nno}
+   </delete> 
 	
 </mapper>
