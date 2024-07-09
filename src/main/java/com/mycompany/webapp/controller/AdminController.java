@@ -243,4 +243,28 @@ public class AdminController {
 
 		return map;
 	}
+
+	@GetMapping("socialList/search")
+	public Map<String, Object> listSocialKeyword(@RequestParam(defaultValue = "1") int pageNo,
+			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "name") String option) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("option", option);
+		int totalRows = socialService.getCountByKeyword(param);
+		Pager pager = new Pager(10, 5, totalRows, pageNo);
+		param.put("pager", pager);
+
+		List<Social> list = socialService.getListByKeyword(param);
+		Map<String, Object> map = new HashMap<>();
+		map.put("socials", list);
+		map.put("pager", pager);
+
+		return map;
+	}
+
+	@GetMapping("/countSex")
+	public int countSex(@RequestParam String msex) {
+		int countSex = memberService.getSexCnt(msex);
+		return countSex;
+	}
 }
