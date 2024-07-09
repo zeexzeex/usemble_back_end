@@ -157,6 +157,12 @@ public class SocialController {
 	@PostMapping("/sjoin")
 	public Map<String, String> sjoin(@RequestBody Sjoin sjoin) {
 		Map<String, String> isJoin = socialService.joinSocial(sjoin);
+		Social social = socialService.getSpayInfo(sjoin.getSno());
+
+		if (isJoin.get("response") == "success") {
+			memberService.sendAlarm(social.getMid(),
+					sjoin.getMid() + "님이 " + social.getStitle() + " 어셈블에 참가하셨습니다. :)\n");
+		}
 
 		return isJoin;
 	}
