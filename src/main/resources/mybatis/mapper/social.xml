@@ -284,5 +284,34 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 	from social
 	where mid=#{mid}
 </select>
-
+<select id="countSocialByKeyword" parameterType="Map" resultType="int">
+		select count(*)
+		from social
+		where 
+		<if test="option.equals('title')">
+			stitle like '%' || #{keyword} || '%'
+		</if>
+		<if test="option.equals('mid')">
+			mid like '%' || #{keyword} || '%'
+		</if>
+	</select>
+<select id="selectSocialByKeywordPage" parameterType="Map" resultType="social">
+		select rnum, sno, stitle, mid, swritedate, sstatus
+		from(
+			select rownum as rnum, sno, stitle, mid, swritedate, sstatus
+			from(
+				select sno, stitle, mid, swritedate, sstatus
+				from social
+				where <if test="option.equals('title')">
+						stitle like '%' || #{keyword} || '%'
+					</if>
+					<if test="option.equals('mid')">
+						mid like '%' || #{keyword} || '%'
+					</if>
+				order by sno desc	
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
+	</select>
 </mapper>

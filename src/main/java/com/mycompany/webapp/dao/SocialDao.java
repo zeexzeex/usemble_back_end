@@ -63,4 +63,8 @@ public interface SocialDao {
 
 	public List<Map<String, Object>> selectJoinInAdminByPager(Map<String, Object> param);
 
+	public int countSocialByKeyword(Map<String, Object> param);
+
+	public List<Social> selectSocialByKeywordPage(Map<String, Object> param);
+
 }

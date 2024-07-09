@@ -225,4 +225,14 @@ public class SocialService {
 		return socialList;
 	}
 
+	public int getCountByKeyword(Map<String, Object> param) {
+		int socialCnt = socialDao.countSocialByKeyword(param);
+		return socialCnt;
+	}
+
+	public List<Social> getListByKeyword(Map<String, Object> param) {
+		List<Social> socialList = socialDao.selectSocialByKeywordPage(param);
+		return socialList;
+	}
+
 }
