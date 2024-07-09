@@ -142,14 +142,28 @@
 	where sno=#{sno}
 </select>
 
-<select id="selectSearchByStitle" parameterType="String" resultType="Social">
-	select stitle, sthumbname, sthumbtype, sthumbdata, sno, saddress, sfee
-	from social 
-	where  
-	(sstatus = 'recruitment' or sstatus = 'full')
-	and stitle like '%${keyword}%'
-	and sdeadline > TRUNC(SYSDATE)
+<select id="selectByKeyword" parameterType="String">
+	select count(*)
+	from social
+	where stitle like '%' || #{keyword} || '%' and sstatus not in ('cancel')
+	and <![CDATA[sdeadline > sysdate]]>
 </select>
+
+<select id="selectSearchByStitle" parameterType="Map" resultType="Social">
+    select stitle, sno, saddress, sfee
+    from (
+        select stitle, sno, saddress, sfee, rownum as rnum
+        from social
+        where  
+            (sstatus = 'recruitment' or sstatus = 'full')
+            and stitle like '%' || #{keyword} || '%'
+            and sdeadline > sysdate
+            and #{pager.endRowNo} >= rownum
+        order by sno desc
+    )
+    where rnum >= #{pager.startRowNo}
+</select>
+
 	<select id="countAll" resultType="int">
 		select count(*) from social
 	</select>

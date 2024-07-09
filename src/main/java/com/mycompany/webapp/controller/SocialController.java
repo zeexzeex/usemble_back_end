@@ -314,15 +314,23 @@ public class SocialController {
 
 	// 검색기능
 	@GetMapping("/search")
-	public Map<String, Object> searchList(@RequestParam(required = false) String keyword) {
-		List<Social> list = socialService.getSearchList(keyword);
-		Map<String, Object> map = new HashMap<>();
+	public Map<String, Object> searchList(String keyword, @RequestParam(defaultValue = "1") int pageNo) {
+		int totalRows = socialService.getSocialCntByKeyword(keyword);
 
+		Pager pager = new Pager(9, 5, totalRows, pageNo);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("pager", pager);
+		List<Social> list = socialService.getSearchList(param);
+
+		Map<String, Object> map = new HashMap<>();
 		// 데이터를 맵에 저장
 
 		map.put("response", "success");
 		map.put("keyword", keyword);
 		map.put("searchSocialList", list);
+		map.put("pager", pager);
 		log.info("map: {}", map);
 
 		return map;

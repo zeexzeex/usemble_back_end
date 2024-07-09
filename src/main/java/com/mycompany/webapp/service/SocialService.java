@@ -172,10 +172,14 @@ public class SocialService {
 		return isDeadline;
 	}
 
-	public List<Social> getSearchList(String keyword) {
-		List<Social> searchList = socialDao.selectSearchByStitle(keyword);
-
+	public List<Social> getSearchList(Map<String, Object> param) {
+		List<Social> searchList = socialDao.selectSearchByStitle(param);
 		return searchList;
+	}
+
+	public int getSocialCntByKeyword(String keyword) {
+		int socialCnt = socialDao.selectByKeyword(keyword);
+		return socialCnt;
 	}
 
 	public List<Social> getMainCateSocial(String mid) {

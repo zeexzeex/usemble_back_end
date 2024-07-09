@@ -39,7 +39,9 @@ public interface SocialDao {
 
 	public Date selectIsDeadlineBySno(int sno);
 
-	public List<Social> selectSearchByStitle(String keyword);
+	public List<Social> selectSearchByStitle(Map<String, Object> param);
+
+	public int selectByKeyword(String keyword);
 
 	public List<Social> getMainCateSocial(String mid);
 
