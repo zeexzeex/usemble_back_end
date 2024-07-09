@@ -105,4 +105,34 @@
 		from member
 		where mid=#{mid}
 	</select>
+	<select id="countMemberByKeyword" parameterType="Map" resultType="int">
+		select count(*)
+		from member
+		where 
+		<if test="option.equals('name')">
+			mname like '%' || #{keyword} || '%'
+		</if>
+		<if test="option.equals('mid')">
+			mid like '%' || #{keyword} || '%'
+		</if>
+	</select>
+	<select id="selectMemberByKeywordPage" parameterType="Map" resultType="member">
+		select rnum, mname, mid, msex, mdate, menabled
+		from(
+			select rownum as rnum, mname, mid, msex, mdate, menabled
+			from(
+				select mname, mid, msex, mdate, menabled
+				from member
+				where <if test="option.equals('name')">
+						mname like '%' || #{keyword} || '%'
+					</if>
+					<if test="option.equals('mid')">
+						mid like '%' || #{keyword} || '%'
+					</if>
+				order by mdate desc	
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
+	</select>
 </mapper>

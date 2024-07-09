@@ -1,6 +1,7 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -42,5 +43,9 @@ public interface MemberDao {
 	public int updateMemberEnableByMid(Member member);
 
 	public Member selectMemberAdminByMid(String mid);
+
+	public int countMemberByKeyword(Map<String, Object> param);
+
+	public List<Member> selectMemberByKeywordPage(Map<String, Object> param);
 
 }

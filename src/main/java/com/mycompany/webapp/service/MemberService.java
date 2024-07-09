@@ -232,4 +232,14 @@ public class MemberService {
 		Member member = memberDao.selectMemberAdminByMid(mid);
 		return member;
 	}
+
+	public int getCountByKeyword(Map<String, Object> param) {
+		int memberCnt = memberDao.countMemberByKeyword(param);
+		return memberCnt;
+	}
+
+	public List<Member> getListByKeyword(Map<String, Object> param) {
+		List<Member> memberList = memberDao.selectMemberByKeywordPage(param);
+		return memberList;
+	}
 }
