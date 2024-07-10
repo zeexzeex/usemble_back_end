@@ -79,11 +79,15 @@
 </select>
 
 <select id="selectJoinHistoryByPager" parameterType="Map" resultType="social">
-	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, review
 	from(
-		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, review
 		from(
-			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, (
+                select count(*)
+                from review
+               	where  social.sno=review.sno and review.mid=#{mid}
+            ) as review
 			from social
 			where sstatus not in ('cancel') and sno in (
 				select sno

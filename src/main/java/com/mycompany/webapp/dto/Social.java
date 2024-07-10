@@ -27,4 +27,6 @@ public class Social {
 
 	private MultipartFile sthumbnail;
 
+	private boolean review;
+
 }
