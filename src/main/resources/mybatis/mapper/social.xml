@@ -377,4 +377,10 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 		)
 		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
 	</select>
+	<select id="selectAllSocial" resultType="social">
+		select sno, ctno
+		from social 
+	</select>
+	
+	
 </mapper>

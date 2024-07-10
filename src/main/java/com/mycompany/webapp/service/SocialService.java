@@ -245,4 +245,9 @@ public class SocialService {
 		return socialList;
 	}
 
+	public List<Social> getCountAll() {
+		List<Social> socialList = socialDao.selectAllSocial();
+		return socialList;
+	}
+
 }

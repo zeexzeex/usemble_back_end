@@ -71,4 +71,6 @@ public interface SocialDao {
 
 	public List<Social> selectSocialByKeywordPage(Map<String, Object> param);
 
+	public List<Social> selectAllSocial();
+
 }
