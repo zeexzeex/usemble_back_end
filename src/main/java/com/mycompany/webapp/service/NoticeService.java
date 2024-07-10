@@ -1,6 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,19 @@ public class NoticeService {
 
 	public int delete(int nno) {
 		return noticeDao.deleteByNno(nno);
+	}
+
+	public List<Notice> noticeByPage(Map<String, Object> param) {
+		List<Notice> noticeList = noticeDao.noticeByPage(param);
+		return noticeList;
+	}
+
+	public List<Notice> getAllNotices() {
+		return noticeDao.getAllNotices();
+	}
+
+	public Notice getNoticeDetail(int nno) {
+		return noticeDao.selectNoticeDetail(nno);
 	}
 
 }

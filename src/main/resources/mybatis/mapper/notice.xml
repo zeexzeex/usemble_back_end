@@ -38,5 +38,18 @@
 	<delete id="deleteByNno" parameterType="int">
       delete from notice where nno=#{nno}
    </delete> 
-	
+	<select id="noticeByPage" parameterType="Map" resultType="Notice">
+	    select mid, nno, ntitle, ncontent, ndate
+	    from (
+	        select mid, nno, ntitle, ncontent, ndate, rownum as rnum
+	        from notice
+	        where #{pager.endRowNo} >= rownum
+	        order by nno desc
+	    )
+	    where rnum >= #{pager.startRowNo}
+	</select>
+	<select id="getAllNotices" resultType="Notice">
+	    select mid, nno, ntitle, ncontent, ndate
+	    from notice
+	</select>
 </mapper>

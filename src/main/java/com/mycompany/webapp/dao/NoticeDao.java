@@ -1,6 +1,7 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,4 +23,9 @@ public interface NoticeDao {
 
 	public int deleteByNno(int nno);
 
+	public List<Notice> noticeByPage(Map<String, Object> param);
+
+	public List<Notice> getAllNotices();
+
+	public Notice selectNoticeDetail(int nno);
 }
