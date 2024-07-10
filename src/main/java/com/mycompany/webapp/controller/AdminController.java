@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Notice;
 import com.mycompany.webapp.dto.Pager;
@@ -262,4 +263,25 @@ public class AdminController {
 
 		return map;
 	}
+
+	@GetMapping("/countAll")
+	public List<Member> getCountAll() {
+		List<Member> memberList = memberService.getCountAll();
+		return memberList;
+	}
+
+	@GetMapping("/countAllSocial")
+	public List<Social> countAllSocial() {
+		List<Social> socialList = socialService.getCountAll();
+		log.info(socialList.toString());
+		return socialList;
+	}
+
+	@GetMapping("/getCateName")
+	public List<Category> getCateName() {
+		List<Category> cateList = adminService.getCateName();
+
+		return cateList;
+	}
+
 }

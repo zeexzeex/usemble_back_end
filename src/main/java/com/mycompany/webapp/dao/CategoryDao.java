@@ -11,4 +11,6 @@ public interface CategoryDao {
 
 	List<Category> getCategory();
 
+	List<Category> getCategoryName();
+
 }
