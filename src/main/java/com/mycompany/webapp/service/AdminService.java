@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.mycompany.webapp.dao.CategoryDao;
 import com.mycompany.webapp.dao.MemberDao;
 import com.mycompany.webapp.dao.NoticeDao;
+import com.mycompany.webapp.dao.ReviewDao;
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.Notice;
+import com.mycompany.webapp.dto.Review;
 
 @Service
 public class AdminService {
@@ -20,6 +22,8 @@ public class AdminService {
 	CategoryDao categoryDao;
 	@Autowired
 	NoticeDao noticeDao;
+	@Autowired
+	ReviewDao reviewDao;
 
 	public void updateMemberEnable(Member member) {
 		member.setMenabled(!member.isMenabled());
@@ -34,5 +38,10 @@ public class AdminService {
 	public List<Notice> getNotice() {
 		List<Notice> noticeList = noticeDao.getNotice();
 		return noticeList;
+	}
+
+	public List<Review> getReveiw() {
+		List<Review> reviewList = reviewDao.getReview();
+		return reviewList;
 	}
 }

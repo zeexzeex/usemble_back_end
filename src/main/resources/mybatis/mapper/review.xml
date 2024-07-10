@@ -113,6 +113,17 @@
         WHERE rnum >= #{startRowNo}
         ]]>
     </select>
+    
+    <select id="getReview" resultType="Review">
+    	<![CDATA[
+    	select rcontent, rdate, mid
+		from (
+		    select rcontent, rdate, mid
+		    from review
+		    order by rdate desc
+		)
+		where rownum <= 4]]>
+    </select>
 	
 
 </mapper>

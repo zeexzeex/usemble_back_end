@@ -289,4 +289,10 @@ public class AdminController {
 		return noticeList;
 	}
 
+	@GetMapping("/getReview")
+	public List<Review> getReview() {
+		List<Review> reviewList = adminService.getReveiw();
+		return reviewList;
+	}
+
 }
