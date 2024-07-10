@@ -246,7 +246,7 @@ public class AdminController {
 		return map;
 	}
 
-	@GetMapping("socialList/search")
+	@GetMapping("/socialList/search")
 	public Map<String, Object> listSocialKeyword(@RequestParam(defaultValue = "1") int pageNo,
 			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "name") String option) {
 		Map<String, Object> param = new HashMap<>();
@@ -273,15 +273,20 @@ public class AdminController {
 	@GetMapping("/countAllSocial")
 	public List<Social> countAllSocial() {
 		List<Social> socialList = socialService.getCountAll();
-		log.info(socialList.toString());
 		return socialList;
 	}
 
 	@GetMapping("/getCateName")
 	public List<Category> getCateName() {
 		List<Category> cateList = adminService.getCateName();
-
 		return cateList;
+	}
+
+	@GetMapping("/getNotice")
+	public List<Notice> getNotice() {
+		List<Notice> noticeList = adminService.getNotice();
+		log.info(noticeList.toString());
+		return noticeList;
 	}
 
 }

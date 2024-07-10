@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CategoryDao;
 import com.mycompany.webapp.dao.MemberDao;
+import com.mycompany.webapp.dao.NoticeDao;
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.Member;
+import com.mycompany.webapp.dto.Notice;
 
 @Service
 public class AdminService {
@@ -16,6 +18,8 @@ public class AdminService {
 	MemberDao memberDao;
 	@Autowired
 	CategoryDao categoryDao;
+	@Autowired
+	NoticeDao noticeDao;
 
 	public void updateMemberEnable(Member member) {
 		member.setMenabled(!member.isMenabled());
@@ -25,5 +29,10 @@ public class AdminService {
 	public List<Category> getCateName() {
 		List<Category> categoryList = categoryDao.getCategory();
 		return categoryList;
+	}
+
+	public List<Notice> getNotice() {
+		List<Notice> noticeList = noticeDao.getNotice();
+		return noticeList;
 	}
 }

@@ -52,4 +52,15 @@
 	    select mid, nno, ntitle, ncontent, ndate
 	    from notice
 	</select>
+	<select id="getNotice" resultType="Notice">
+	    <![CDATA[
+	    select mid, nno, ntitle, ncontent, ndate
+	    from (
+	        select mid, nno, ntitle, ncontent, ndate
+	        from notice
+	        order by ndate desc
+	    )
+	    where rownum <= 4
+	    ]]>
+	</select>
 </mapper>

@@ -28,4 +28,6 @@ public interface NoticeDao {
 	public List<Notice> getAllNotices();
 
 	public Notice selectNoticeDetail(int nno);
+
+	public List<Notice> getNotice();
 }
