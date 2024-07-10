@@ -355,8 +355,8 @@ public class SocialController {
 		return socialList;
 	}
 
-	@GetMapping("/inprograss")
-	public Map<String, Object> inprograss(String mid, @RequestParam(defaultValue = "1") int pageNo,
+	@GetMapping("/inprogress")
+	public Map<String, Object> inprogress(String mid, @RequestParam(defaultValue = "1") int pageNo,
 			@RequestParam(defaultValue = "0") int ctno, String sort) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("mid", mid);
@@ -371,7 +371,7 @@ public class SocialController {
 		Pager pager = new Pager(9, 5, totalRows, pageNo);
 		param.put("pager", pager);
 
-		List<Social> socialList = socialService.getInprograss(param);
+		List<Social> socialList = socialService.getInprogress(param);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("socialList", socialList);
@@ -380,10 +380,30 @@ public class SocialController {
 		return map;
 	}
 
-	@GetMapping("/prograssed")
-	public List<Social> prograssed(String mid) {
-		List<Social> socialList = socialService.getPrograssed(mid);
-		return socialList;
+	@GetMapping("/progressed")
+	public Map<String, Object> progressed(String mid, @RequestParam(defaultValue = "1") int pageNo,
+			@RequestParam(defaultValue = "0") int ctno, String sort) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+		if (ctno != 0) {
+			param.put("ctno", ctno);
+		}
+
+		int totalRows = socialService.getProgessedCnt(param);
+		if (sort != null) {
+			param.put("sort", sort);
+		}
+
+		Pager pager = new Pager(9, 5, totalRows, pageNo);
+		param.put("pager", pager);
+
+		List<Social> socialList = socialService.getProgressed(param);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("socialList", socialList);
+		map.put("pager", pager);
+
+		return map;
 	}
 
 }
