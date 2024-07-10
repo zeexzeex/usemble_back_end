@@ -115,20 +115,17 @@ public class SocialController {
 	}
 
 	@PatchMapping("/delete/{sno}")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> deleteSocial(@PathVariable int sno) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("sno", sno);
-		param.put("sstatus", sstatus);
+		param.put("sstatus", "cancel");
 		socialService.updateStatus(param);
 
-		if (sstatus == "cancel" || sstatus == "delete") {
-			List<Member> memberList = memberService.getJoinMember(sno);
-			Social social = socialService.getSpayInfo(sno);
-			Iterator<Member> iter = memberList.iterator();
-			while (iter.hasNext()) {
-				memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
-			}
+		List<Member> memberList = memberService.getJoinMember(sno);
+		Social social = socialService.getSpayInfo(sno);
+		Iterator<Member> iter = memberList.iterator();
+		while (iter.hasNext()) {
+			memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
 		}
 
 		Map<String, String> map = new HashMap<>();
@@ -229,7 +226,6 @@ public class SocialController {
 		map.put("response", "success");
 
 		return map;
-
 	}
 
 	@GetMapping("/history/join")
