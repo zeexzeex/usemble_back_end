@@ -53,9 +53,11 @@ public interface SocialDao {
 
 	public List<Social> getRecruitedAssemble(String mid);
 
-	public List<Social> getInprograss(String mid);
+	public List<Social> getInprograss(Map<String, Object> param);
 
 	public List<Social> getPrograssed(String mid);
+
+	public int countInprogress(Map<String, Object> param);
 
 	public int countAllByMid(String mid);
 

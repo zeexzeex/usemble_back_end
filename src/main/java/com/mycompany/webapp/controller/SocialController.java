@@ -112,18 +112,20 @@ public class SocialController {
 		return map;
 	}
 
-	@PatchMapping("/delete/{sno}")
-	public Map<String, String> deleteSocial(@PathVariable int sno) {
+	@PatchMapping("/update/{sno}/{sstatus}")
+	public Map<String, String> updateStatus(@PathVariable int sno, @PathVariable String sstatus) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("sno", sno);
-		param.put("sstatus", "cancel");
+		param.put("sstatus", sstatus);
 		socialService.updateStatus(param);
 
-		List<Member> memberList = memberService.getJoinMember(sno);
-		Social social = socialService.getSpayInfo(sno);
-		Iterator<Member> iter = memberList.iterator();
-		while (iter.hasNext()) {
-			memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
+		if (sstatus == "cancel" || sstatus == "delete") {
+			List<Member> memberList = memberService.getJoinMember(sno);
+			Social social = socialService.getSpayInfo(sno);
+			Iterator<Member> iter = memberList.iterator();
+			while (iter.hasNext()) {
+				memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
+			}
 		}
 
 		Map<String, String> map = new HashMap<>();
@@ -355,9 +357,28 @@ public class SocialController {
 	}
 
 	@GetMapping("/inprograss")
-	public List<Social> inprograss(String mid) {
-		List<Social> socialList = socialService.getInprograss(mid);
-		return socialList;
+	public Map<String, Object> inprograss(String mid, @RequestParam(defaultValue = "1") int pageNo,
+			@RequestParam(defaultValue = "0") int ctno, String sort) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("mid", mid);
+		if (ctno != 0) {
+			param.put("ctno", ctno);
+		}
+
+		int totalRows = socialService.getInprogressCnt(param);
+		if (sort != null) {
+			param.put("sort", sort);
+		}
+		Pager pager = new Pager(9, 5, totalRows, pageNo);
+		param.put("pager", pager);
+
+		List<Social> socialList = socialService.getInprograss(param);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("socialList", socialList);
+		map.put("pager", pager);
+
+		return map;
 	}
 
 	@GetMapping("/prograssed")

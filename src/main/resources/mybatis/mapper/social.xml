@@ -205,27 +205,59 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 	select sno, stitle, saddress, sfee, sstatus, sdeadline, mid
     from social
     where <![CDATA[ sdeadline > sysdate and rownum <= 3 ]]> and sstatus not in ('cancel') and mid=#{mid}
+    order by sno desc
 </select>
 
 <select id="getRecruitedAssemble" parameterType="String" resultType="Social">
 	select sno, stitle, saddress, sfee, sstatus, sdeadline, mid
     from social
     where <![CDATA[ sdeadline < sysdate and rownum <= 3 ]]> and sstatus not in ('cancel') and mid=#{mid}
+    order by sno desc
 </select>
 
-<select id="getInprograss" parameterType="String" resultType="Social">
-	select sno, stitle, saddress, sfee, sstatus, sdeadline
-	from social
-	where <![CDATA[sdeadline > sysdate]]> and sstatus not in ('cancel') 
-		and mid=#{mid}
+<select id="getInprograss" parameterType="Map" resultType="Social">
+	select rnum, sno, stitle, saddress, sfee, sstatus, sdeadline
+		     from (
+			    select rownum as rnum, sno, stitle, saddress, sfee, sstatus, sdeadline 
+			    from (
+			        select sno, stitle, saddress, sfee, sstatus, sdeadline 
+			        from social
+			        where <![CDATA[ sdeadline > sysdate and sstatus not in ('cancel') ]]>
+			            and mid=#{mid}
+			            <if test="ctno != null">
+						 and ctno=#{ctno}
+						</if>
+						<choose>
+							<when test="sort != null and sort.equals('deadline')">
+								order by sdeadline, sstarttime
+							</when>
+							<otherwise>
+								order by sno desc
+							</otherwise>
+						</choose>
+			        )
+		          where <![CDATA[ rownum <= #{pager.endRowNo} ]]>
+		      )
+		      where <![CDATA[ rnum >= #{pager.startRowNo} ]]>
 </select>
 
 <select id="getPrograssed" parameterType="String" resultType="Social">
 	select sno, stitle, saddress, sfee, sstatus, sdeadline
 	from social
-	where <![CDATA[sdeadline < sysdate]]> and sstatus not in ('cancel') 
-		and mid=#{mid}
+	where <![CDATA[sdeadline < sysdate]]>
+	and sstatus not in ('cancel')
+	and mid=#{mid}
 </select>
+
+<select id="countInprogress" parameterType="Map" resultType="int">
+	select count(*)
+	from social
+	where mid=#{mid} and <![CDATA[sdeadline > sysdate and sstatus not in ('cancel')]]>
+	<if test="ctno != null">
+	and ctno=#{ctno}
+	</if>
+</select>
+	
 
 <resultMap type="HashMap" id="socialAdminForm">
   <result property="sno" column="sno" />

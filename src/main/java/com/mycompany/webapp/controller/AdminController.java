@@ -261,10 +261,4 @@ public class AdminController {
 
 		return map;
 	}
-
-	@GetMapping("/countSex")
-	public int countSex(@RequestParam String msex) {
-		int countSex = memberService.getSexCnt(msex);
-		return countSex;
-	}
 }

@@ -215,14 +215,19 @@ public class SocialService {
 		return socialList;
 	}
 
-	public List<Social> getInprograss(String mid) {
-		List<Social> socialList = socialDao.getInprograss(mid);
+	public List<Social> getInprograss(Map<String, Object> param) {
+		List<Social> socialList = socialDao.getInprograss(param);
 		return socialList;
 	}
 
 	public List<Social> getPrograssed(String mid) {
 		List<Social> socialList = socialDao.getPrograssed(mid);
 		return socialList;
+	}
+
+	public int getInprogressCnt(Map<String, Object> param) {
+		int inprogressCnt = socialDao.countInprogress(param);
+		return inprogressCnt;
 	}
 
 	public int getCountByKeyword(Map<String, Object> param) {
