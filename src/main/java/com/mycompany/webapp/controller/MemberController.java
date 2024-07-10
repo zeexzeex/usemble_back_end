@@ -427,7 +427,7 @@ public class MemberController {
 		param.put("mid", mid);
 
 		int totalRows = memberService.getAlarmCntByMid(mid);
-		Pager pager = new Pager(5, 5, totalRows, pageNo);
+		Pager pager = new Pager(4, 5, totalRows, pageNo);
 
 		param.put("pager", pager);
 		List<Alarm> alarmList = memberService.getAlarmList(param);
