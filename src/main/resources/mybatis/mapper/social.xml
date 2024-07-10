@@ -66,10 +66,14 @@
 </update>
 
 <select id="getMainSocial" resultType="Social">
-	select sno, stitle, saddress, sfee, ctno, sstatus
-	from social
-	where <![CDATA[sdeadline > sysdate and rownum <= 4]]> and sstatus not in ('cancel')
-	order by sno desc
+	select rownum , sno, stitle, saddress, sfee, ctno, sstatus
+	from(
+	    select sno, stitle, saddress, sfee, ctno, sstatus
+	    from social
+	    where <![CDATA[sdeadline > sysdate]]> and sstatus not in ('cancel')
+	    order by sno desc
+	    )
+	where <![CDATA[rownum <= 4]]>
 </select>
 
 <select id="selectSpayInfoBySno" parameterType="int" resultType="social">
