@@ -135,4 +135,9 @@
 		)
 		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
 	</select>
+	<select id="selectAllMemeber" resultType="member">
+		select mid, msex 
+		from member 
+	</select>
+	
 </mapper>

@@ -242,4 +242,10 @@ public class MemberService {
 		List<Member> memberList = memberDao.selectMemberByKeywordPage(param);
 		return memberList;
 	}
+
+	public List<Member> getCountAll() {
+		List<Member> memberList = memberDao.selectAllMemeber();
+		return memberList;
+	}
+
 }

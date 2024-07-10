@@ -48,4 +48,6 @@ public interface MemberDao {
 
 	public List<Member> selectMemberByKeywordPage(Map<String, Object> param);
 
+	public List<Member> selectAllMemeber();
+
 }
