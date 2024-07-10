@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,6 +29,7 @@ public class ReviewController {
 	ReviewService reviewService;
 
 	@PostMapping("/write")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> writeReview(@RequestBody Review review) {
 		Map<String, String> map = new HashMap<>();
 
@@ -39,6 +41,7 @@ public class ReviewController {
 	}
 
 	@GetMapping("/state")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> isReview(Review review) {
 		boolean isReview = reviewService.isReview(review);
 
@@ -63,6 +66,7 @@ public class ReviewController {
 	}
 
 	@PatchMapping("/update")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> updateReview(@RequestBody Review review) {
 		reviewService.updateReview(review);
 
@@ -74,6 +78,7 @@ public class ReviewController {
 	}
 
 	@DeleteMapping("/delete")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> deleteReview(Review review) {
 		reviewService.deleteReview(review);
 
@@ -107,6 +112,7 @@ public class ReviewController {
 	}
 
 	@GetMapping("/leave")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> leaveReview(@RequestParam(defaultValue = "1") int lPageNo, String mid) {
 		int totalRows = reviewService.getLeaveReviewCnt(mid);
 

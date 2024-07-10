@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class NoticeController {
 	NoticeService noticeService;
 
 	@PostMapping("/write")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public Map<String, String> write(@RequestBody Notice notice) {
 		Map<String, String> map = new HashMap<>();
 		noticeService.write(notice);
@@ -42,6 +44,7 @@ public class NoticeController {
 	}
 
 	@PutMapping("/update")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public Notice update(@RequestBody Notice notice) {
 		noticeService.update(notice);
 		notice = noticeService.getNotice(notice.getNno());
@@ -50,6 +53,7 @@ public class NoticeController {
 	}
 
 	@DeleteMapping("/delete/{nno}")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public void delete(@PathVariable int nno) {
 		noticeService.delete(nno);
 	}

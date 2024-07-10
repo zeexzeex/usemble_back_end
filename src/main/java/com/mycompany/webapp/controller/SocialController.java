@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -43,6 +44,7 @@ public class SocialController {
 	MemberService memberService;
 
 	@PostMapping("/write")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> write(Social social) {
 		Map<String, String> map = new HashMap<>();
 
@@ -112,8 +114,9 @@ public class SocialController {
 		return map;
 	}
 
-	@PatchMapping("/update/{sno}/{sstatus}")
-	public Map<String, String> updateStatus(@PathVariable int sno, @PathVariable String sstatus) {
+	@PatchMapping("/delete/{sno}")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
+	public Map<String, String> deleteSocial(@PathVariable int sno) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("sno", sno);
 		param.put("sstatus", sstatus);
@@ -155,6 +158,7 @@ public class SocialController {
 	}
 
 	@PostMapping("/sjoin")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> sjoin(@RequestBody Sjoin sjoin) {
 		Map<String, String> isJoin = socialService.joinSocial(sjoin);
 		Social social = socialService.getSpayInfo(sjoin.getSno());
@@ -180,6 +184,7 @@ public class SocialController {
 	}
 
 	@GetMapping("/pay/{sno}")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> sjoinInfo(@PathVariable int sno) {
 		Map<String, Object> map = new HashMap<>();
 
@@ -214,6 +219,7 @@ public class SocialController {
 	}
 
 	@DeleteMapping("/sjoin/cancel")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> cancelSjoin(Sjoin sjoin) {
 		socialService.cancelSjoin(sjoin);
 		Social social = socialService.getSpayInfo(sjoin.getSno());
@@ -226,15 +232,8 @@ public class SocialController {
 
 	}
 
-	@GetMapping("/sjoin/apply")
-	public Map<String, String> applySjoin(Sjoin sjoin) {
-		Map<String, String> map = new HashMap<>();
-		map.put("response", "success");
-
-		return map;
-	}
-
 	@GetMapping("/history/join")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> joinHistory(@RequestParam(defaultValue = "1") int jPageNo, String mid) {
 		int totalRows = socialService.getJoinHistoryCnt(mid);
 		Pager pager = new Pager(4, 5, totalRows, jPageNo);
@@ -254,6 +253,7 @@ public class SocialController {
 	}
 
 	@GetMapping("/history/recruit")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> recruitHistory(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
 		int totalRows = socialService.getRecruitHistoryCnt(mid);
 		Pager pager = new Pager(4, 5, totalRows, rPageNo);
@@ -273,12 +273,14 @@ public class SocialController {
 	}
 
 	@GetMapping("/applyAssemble")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public List<Social> applyAssemble(String mid) {
 		List<Social> socialList = socialService.getApplyAssemble(mid);
 		return socialList;
 	}
 
 	@GetMapping("/sjoin/list/{sno}")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> joinMemberList(@PathVariable int sno) {
 		List<Member> memberList = memberService.getJoinMember(sno);
 
@@ -301,6 +303,7 @@ public class SocialController {
 	}
 
 	@DeleteMapping("/sjoin/refuse")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> refuseJoinMember(Sjoin sjoin) {
 		socialService.cancelSjoin(sjoin);
 		Social social = socialService.getSpayInfo(sjoin.getSno());

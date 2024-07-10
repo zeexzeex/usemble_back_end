@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -145,6 +146,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/likeList")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> likeList(@RequestParam(defaultValue = "1") int pageNo, String mid) {
 		// 내가 좋아요한 사람의 수
 		int totalRows = memberService.getMyLikeCnt(mid);
@@ -181,6 +183,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/privacy")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Member privacy(String mid) {
 		// 유저 아이디, 이름, 생년월일, 전화번호, 성별, 은행명, 계좌번호, 동의사항 가져오기
 		Member member = memberService.getPrivacy(mid);
@@ -197,12 +200,14 @@ public class MemberController {
 	}
 
 	@PostMapping("/like")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public void like(Mlike mlike) {
 		// 좋아요 추가
 		int like = memberService.like(mlike);
 	}
 
 	@DeleteMapping("/unlike")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public void unlike(Mlike mlike) {
 		// 좋아요 삭제
 		int like = memberService.deleteLike(mlike);
@@ -231,6 +236,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/withdraw")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public void withdraw(String mid) {
 		// 유저 탈퇴하기
 		int withdraw = memberService.withdrawMember(mid);
@@ -285,6 +291,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updateProfile")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public void updateProfile(Member member) {
 		// 프로필 이미지가 존재할 때
 		if (member.getMattach() != null && !member.getMattach().isEmpty()) {
@@ -305,6 +312,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updatePassword")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> updatePassword(String mid, String originPassword, String newPassword) {
 		Map<String, String> map = new HashMap<>();
 
@@ -343,6 +351,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updatePrivacy")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> updatePrivacy(@RequestBody Member member) {
 		// 새로운 멤버 정보로 업데이트
 		memberService.updatePrivacy(member);
@@ -354,6 +363,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/updateAgree")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> updateAgree(@RequestBody Member member) {
 		// 선택 동의 사항 업데이트
 		memberService.updateAgree(member);
@@ -371,6 +381,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/putMcategory")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> putMcategory(@RequestBody List<Mcategory> mcategory) {
 		memberService.putMcategory(mcategory);
 
@@ -381,6 +392,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/updateMcategory")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> updateMcategory(@RequestBody List<Mcategory> mcategory) {
 		memberService.updateMcategory(mcategory);
 
@@ -391,12 +403,14 @@ public class MemberController {
 	}
 
 	@DeleteMapping("/deleteMcategory")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public void deleteMcategory(String mid) {
 		log.info(mid);
 		memberService.deleteMcategory(mid);
 	}
 
 	@PostMapping("/putAgree")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> putAgree(String mid, boolean agree) {
 		memberService.putAgree(mid);
 
@@ -407,6 +421,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/alarm")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> getAlarm(@RequestParam(defaultValue = "1") int pageNo, String mid) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("mid", mid);
@@ -426,6 +441,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/alarm/check")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> checkAlarm(int ano) {
 		memberService.checkAlarm(ano);
 
@@ -436,6 +452,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/alarm/state")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> isAlarm(String mid) {
 		boolean isAlarm = memberService.isAlarm(mid);
 
