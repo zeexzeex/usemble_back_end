@@ -381,7 +381,6 @@ public class MemberController {
 	}
 
 	@PostMapping("/putMcategory")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> putMcategory(@RequestBody List<Mcategory> mcategory) {
 		memberService.putMcategory(mcategory);
 
