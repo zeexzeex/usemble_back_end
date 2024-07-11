@@ -12,7 +12,6 @@
 		values (#{mid}, #{ctno})
 	</insert>
 	
-	
 	<delete id="deleteMcategory" parameterType="String">
 		delete from mcategory where mid = #{mid}
 	</delete>

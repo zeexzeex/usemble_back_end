@@ -20,25 +20,30 @@
 		)
 		]]>
 	</select>
+
 	<select id="count" parameterType="String" resultType="int">
 		select count(*)
 		from mlike
 		where fmid = #{mid}
 	</select>
+
 	<select id="myLikeCount" parameterType="String" resultType="int">
 		select count(*)
 		from mlike
 		where mid = #{mid}
 	</select>
+
 	<select id="selectLikeByMidFmid" parameterType="Mlike" resultType="boolean">
 		select count(*)
 		from mlike
 		where mid=#{mid} and fmid=#{fmid}
 	</select>
+
 	<insert id="insertLikeByMidFmid" parameterType="Mlike">
 			insert into mlike(mid, fmid)
 			values(#{mid}, #{fmid})
 	</insert>
+	
 	<delete id="deleteLikeByMidFmid" parameterType="Mlike">
 			delete from mlike where mid=#{mid} and fmid=#{fmid}
 	</delete>

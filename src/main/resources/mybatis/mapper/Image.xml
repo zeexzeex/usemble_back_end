@@ -5,6 +5,7 @@
 		insert into image(iname, itype, idata)
 		values(#{iname}, #{itype}, #{idata})
 	</insert>
+	
 	<select id="selectImageByName" parameterType="String" resultType="image">
 		select iname, itype, idata
 		from image

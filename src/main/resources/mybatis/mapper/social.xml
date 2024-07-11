@@ -98,7 +98,7 @@
 				from sjoin
 				where mid=#{mid}
 			)
-			order by sdeadline desc
+			order by sdeadline desc, sstarttime desc
 		)
 		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 	)
@@ -123,7 +123,7 @@
 			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
 			from social
 			where sstatus not in ('cancel') and mid=#{mid}
-			order by sdeadline desc
+			order by sdeadline desc, sstarttime desc
 		)
 		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 	)
@@ -339,7 +339,7 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 			sdeadline, smembercount, sstartdate, swritedate, sstarttime, (select count(*) from sjoin where sjoin.sno=social.sno) as curjoin
 			from social, category, sjoin
 			where sjoin.mid=#{mid} and category.ctno = social.ctno and sjoin.sno = social.sno
-			order by sdeadline desc
+			order by sdeadline desc, sstarttime desc
 		)
 		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 	)
@@ -362,7 +362,7 @@ select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
 			mid like '%' || #{keyword} || '%'
 		</if>
 	</select>
-<select id="selectSocialByKeywordPage" parameterType="Map" resultType="social">
+	<select id="selectSocialByKeywordPage" parameterType="Map" resultType="social">
 		select rnum, sno, stitle, mid, swritedate, sstatus
 		from(
 			select rownum as rnum, sno, stitle, mid, swritedate, sstatus
