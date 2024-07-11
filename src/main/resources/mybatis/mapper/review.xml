@@ -62,6 +62,7 @@
 				    from social
 				    where social.mid=#{mid} and social.sstatus not in ('cancel')
 				)
+				order by social.sstartdate desc, social.sstarttime desc, review.rdate desc			
 			)
 			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 		)
@@ -91,6 +92,7 @@
 				select review.sno, review.mid, member.mname, social.stitle, social.sstartdate, rcontent, rdate
 				from review, social, member
 				where member.mid=review.mid and review.sno=social.sno and review.mid = #{mid}
+				order by social.sstartdate desc, social.sstarttime desc, review.rdate desc			
 			)
 			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
 		)
