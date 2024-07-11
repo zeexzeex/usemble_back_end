@@ -25,6 +25,7 @@ public class AdminService {
 	@Autowired
 	ReviewDao reviewDao;
 
+	// 멤버 탈퇴 여부 수정
 	public void updateMemberEnable(Member member) {
 		member.setMenabled(!member.isMenabled());
 		int cnt = memberDao.updateMemberEnableByMid(member);

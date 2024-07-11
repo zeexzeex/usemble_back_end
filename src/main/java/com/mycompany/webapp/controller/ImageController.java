@@ -45,6 +45,7 @@ public class ImageController {
 
 		}
 
+		// 이미지 경로 설정
 		String imgUrl = "/img/download/" + image.getIname();
 
 		map.put("response", "success");

@@ -111,8 +111,10 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자 탈퇴 여부 업데이트
 	@PostMapping("/member/state")
 	public Map<String, String> updateState(@RequestBody Member member) {
+		// 사용자 탈퇴 여부 업데이트
 		adminService.updateMemberEnable(member);
 
 		Map<String, String> map = new HashMap<>();
@@ -121,8 +123,10 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자 상세 정보
 	@GetMapping("/member/info")
 	public Map<String, Object> getMemberInfo(String mid) {
+		// 사용자 상세 정보 가져오기
 		Member member = memberService.getMemberInfo(mid);
 
 		Map<String, Object> map = new HashMap<>();
@@ -132,8 +136,10 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자가 모집한 소셜
 	@GetMapping("/social/recruit")
 	public Map<String, Object> getSocialRecruit(@RequestParam(defaultValue = "1") int sPageNo, String mid) {
+		// 사용자가 여태까지 작성한 모든 소셜 수 가져오기
 		int totalRows = socialService.getMemberSocialCntAll(mid);
 		Pager pager = new Pager(5, 5, totalRows, sPageNo);
 
@@ -141,6 +147,7 @@ public class AdminController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 사용자의 모든 소셜 정보 가져오기
 		List<Map<String, Object>> socialList = socialService.getRecruitSocialPageInAdmin(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -151,8 +158,10 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자가 참여한 소셜
 	@GetMapping("/social/join")
 	public Map<String, Object> getSocialJoin(@RequestParam(defaultValue = "1") int jPageNo, String mid) {
+		// 사용자가 참여한 모든 소셜 개수 가져오기
 		int totalRows = socialService.getJoinHistoryCnt(mid);
 		Pager pager = new Pager(5, 5, totalRows, jPageNo);
 
@@ -160,6 +169,7 @@ public class AdminController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 사용자가 참여한 모든 소셜 정보 가져오기
 		List<Map<String, Object>> socialList = socialService.getJoinSocialPageInAdmin(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -170,14 +180,18 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자가 작성한 리뷰
 	@GetMapping("/review")
 	public Map<String, Object> getReview(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
+		// 사용자가 작성한 모든 리뷰 수 가져오기
 		int totalRows = reviewService.getLeaveReviewCnt(mid);
 		Pager pager = new Pager(5, 5, totalRows, rPageNo);
+
 		Map<String, Object> param = new HashMap<>();
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 사용자가 작성한 모든 리뷰 정보 가져오기
 		List<Map<String, Object>> reviewList = reviewService.getLeaveReviewList(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -188,6 +202,7 @@ public class AdminController {
 		return map;
 	}
 
+	// 리뷰 삭제
 	@DeleteMapping("/review/delete")
 	public Map<String, Object> deleteReview(Review review) {
 		Map<String, Object> map = new HashMap<>();
@@ -197,7 +212,10 @@ public class AdminController {
 			return map;
 		}
 
+		// 리뷰 삭제하기
 		reviewService.deleteReview(review);
+
+		// 리뷰가 삭제된 사용자에게 메세지 알림
 		Social social = socialService.getSpayInfo(review.getSno());
 		memberService.sendAlarm(review.getMid(),
 				"관리자에 의해 " + "\"" + social.getStitle() + "\"" + " 리뷰가 삭제 처리되었습니다. :(\n");
@@ -207,13 +225,17 @@ public class AdminController {
 		return map;
 	}
 
+	// 소셜 취소
 	@PatchMapping("/social/cancel/{sno}")
 	public Map<String, String> cancelSocial(@PathVariable int sno) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("sno", sno);
 		param.put("sstatus", "cancel");
+
+		// 소셜 취소하기
 		socialService.updateStatus(param);
 
+		// 취소된 소셜의 주최자, 참가자에게 메세지 알림
 		List<Member> memberList = memberService.getJoinMember(sno);
 		Social social = socialService.getSpayInfo(sno);
 		Iterator<Member> iter = memberList.iterator();
@@ -221,6 +243,7 @@ public class AdminController {
 			memberService.sendAlarm(iter.next().getMid(),
 					"관리자에 의해 " + "\"" + social.getStitle() + "\"" + " 어셈블이 취소되었습니다. :(\n");
 		}
+		memberService.sendAlarm(social.getMid(), "관리자에 의해 " + "\"" + social.getStitle() + "\"" + " 어셈블이 취소되었습니다. :(\n");
 
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
@@ -228,6 +251,7 @@ public class AdminController {
 		return map;
 	}
 
+	// 사용자 검색
 	@GetMapping("/memberList/search")
 	public Map<String, Object> listMemberKeyword(@RequestParam(defaultValue = "1") int pageNo,
 			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "name") String option) {
@@ -235,10 +259,12 @@ public class AdminController {
 		param.put("keyword", keyword);
 		param.put("option", option);
 
+		// 키워드에 맞는 사용자 수 가져오기
 		int totalRows = memberService.getCountByKeyword(param);
 		Pager pager = new Pager(10, 5, totalRows, pageNo);
 		param.put("pager", pager);
 
+		// 키워드에 맞는 사용자 정보 가져오기
 		List<Member> list = memberService.getListByKeyword(param);
 
 		Map<String, Object> map = new HashMap<>();

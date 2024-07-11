@@ -42,68 +42,82 @@ public class MemberService {
 	@Autowired
 	AlarmDao alarmDao;
 
+	// 좋아요 리스트 가져오기
 	public List<String> getLikeList(Map<String, Object> map) {
 		List<String> likeList = mlikeDao.selectLikeListByMid(map);
 		return likeList;
 	}
 
+	// 사용자 공용 프로필 정보 가져오기
 	public Member getProfile(String mid) {
 		Member member = memberDao.selectOfficialProfileByMid(mid);
 		return member;
 	}
 
+	// 사용자가 좋아요 한 수 가져오기
 	public int getMyLikeCnt(String mid) {
 		int mlikeCnt = mlikeDao.myLikeCount(mid);
 		return mlikeCnt;
 	}
 
+	// 사용자가 좋아요 받은 수 가져오기
 	public int getLikeCnt(String mid) {
 		int mlikeCnt = mlikeDao.count(mid);
 		return mlikeCnt;
 	}
 
+	// 사용자가 좋아요 했는지 가져오기
 	public boolean getLikeState(Mlike mlike) {
 		boolean likeState = mlikeDao.selectLikeByMidFmid(mlike);
 		return likeState;
 	}
 
+	// 좋아요 해제하기
 	public int deleteLike(Mlike mlike) {
 		int like = mlikeDao.deleteLikeByMidFmid(mlike);
 		return like;
 	}
 
+	// 좋아요
 	public int like(Mlike mlike) {
 		int like = mlikeDao.insertLikeByMidFmid(mlike);
 		return like;
 	}
 
+	// 회원 가입
 	public void join(Member member) {
 		memberDao.insert(member);
 	}
 
+	// 회원 탈퇴
 	public int withdrawMember(String mid) {
 		int withdraw = memberDao.withdrawMemberByMid(mid);
 		return withdraw;
 	}
 
+	// 동일 계정 유무 확인
 	public int checkId(String mid) {
 		int result = memberDao.checkId(mid);
 		return result;
 	}
 
+	// 프로필 이미지 가져오기
 	public Member getMemberAttach(String mid) {
 		Member member = memberDao.attachSelectByMid(mid);
 		return member;
 	}
 
+	// 프로필 수정
 	public void updateProfile(Member member) {
 		int mupdate = memberDao.updateProfileByMid(member);
 	}
 
+	// 비밀번호 수정
 	public void updateMpassword(Member member) {
 		int mupdate = memberDao.updateMpasswordByMid(member);
 	}
 
+	// 임시 비밀번호 발급
 	public String getTempPassword(Member member) {
 		// 사용자 정보 얻기 - 아이디
 		// 임시 비밀번호 생성
@@ -141,10 +155,12 @@ public class MemberService {
 		return tempPassword;
 	}
 
+	// 사용자 개인정보 수정
 	public void updatePrivacy(Member member) {
 		int mupdate = memberDao.updatePrivacy(member);
 	}
 
+	// 사용자 개인정보 가져오기
 	public Member getPrivacy(String mid) {
 		Member member = memberDao.selectPrivacyByMid(mid);
 		return member;
@@ -155,6 +171,7 @@ public class MemberService {
 		return categoryList;
 	}
 
+	// 사용자 선택 동의 수정
 	public void updateAgree(Member member) {
 		int mupdate = memberDao.updateAgree(member);
 	}
@@ -186,13 +203,14 @@ public class MemberService {
 		mcategoryDao.deleteMcategory(mid);
 	}
 
+	// 소셜에 참여한 사용자 리스트 가져오기
 	public List<Member> getJoinMember(int sno) {
 		List<Member> memberList = memberDao.getJoinMemberBySno(sno);
 		return memberList;
 	}
 
+	// 사용자 리스트 페이지 가져오기
 	public List<Member> getList(Pager pager) {
-
 		return memberDao.selectByPage(pager);
 	}
 
@@ -200,6 +218,7 @@ public class MemberService {
 		return memberDao.countAll();
 	}
 
+	// 사용자에게 알림 보내기
 	public void sendAlarm(String mid, String message) {
 		Alarm alarm = new Alarm();
 		alarm.setMid(mid);
@@ -209,35 +228,42 @@ public class MemberService {
 		int cnt = alarmDao.insert(alarm);
 	}
 
+	// 사용자가 미확인한 알림 수 가져오기
 	public int getAlarmCntByMid(String mid) {
 		int alarmCnt = alarmDao.countAlarmByMid(mid);
 		return alarmCnt;
 	}
 
+	// 사용자가 미확인한 알림 가져오기
 	public List<Alarm> getAlarmList(Map<String, Object> param) {
 		List<Alarm> alarmList = alarmDao.selectAlarmByPager(param);
 		return alarmList;
 	}
 
+	// 알림 확인
 	public void checkAlarm(int ano) {
 		alarmDao.updateAlarmByAno(ano);
 	}
 
+	// 미확인 알림 여부 가져오기
 	public boolean isAlarm(String mid) {
 		boolean isAlarm = alarmDao.getAlarmStateByMid(mid);
 		return isAlarm;
 	}
 
+	// 어드민 페이지의 사용자 정보 가져오기
 	public Member getMemberInfo(String mid) {
 		Member member = memberDao.selectMemberAdminByMid(mid);
 		return member;
 	}
 
+	// 키워드에 맞는 사용자 수 세기
 	public int getCountByKeyword(Map<String, Object> param) {
 		int memberCnt = memberDao.countMemberByKeyword(param);
 		return memberCnt;
 	}
 
+	// 키워드에 맞는 사용자 리스트 가져오기
 	public List<Member> getListByKeyword(Map<String, Object> param) {
 		List<Member> memberList = memberDao.selectMemberByKeywordPage(param);
 		return memberList;

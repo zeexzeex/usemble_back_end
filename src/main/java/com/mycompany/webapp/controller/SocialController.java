@@ -43,6 +43,7 @@ public class SocialController {
 	@Autowired
 	MemberService memberService;
 
+	// 소셜 작성
 	@PostMapping("/write")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> write(Social social) {
@@ -60,24 +61,29 @@ public class SocialController {
 
 		}
 
+		// 시작일 기준 하루 전으로 마감일 설정
 		Date sstartDate = social.getSstartDate();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(sstartDate);
 		calendar.add(calendar.DATE, -1);
 
+		// 작성시 소셜 모집 중으로 상태 설정
 		social.setSstatus("recruitment");
 		social.setSdeadline(calendar.getTime());
 
+		// 소셜 작성
 		socialService.writeSocial(social);
 
 		map.put("response", "success");
 		return map;
 	}
 
+	// 소셜 읽기
 	@GetMapping("/read/{sno}")
 	public Map<String, Object> read(@PathVariable int sno) {
 		Map<String, Object> map = new HashMap<>();
 
+		// 소셜 가져오기
 		Social social = socialService.getSocial(sno);
 
 		map.put("response", "success");
@@ -86,6 +92,7 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 리스트 페이지
 	@GetMapping("/list")
 	public Map<String, Object> list(@RequestParam(defaultValue = "1") int pageNo,
 			@RequestParam(defaultValue = "0") int ctno, String sort) {
@@ -94,15 +101,18 @@ public class SocialController {
 			param.put("ctno", ctno);
 		}
 
+		// 카테고리별 소셜 개수 가져오기
 		int totalRows = socialService.getSocialCntByParam(param);
 
 		Pager pager = new Pager(9, 5, totalRows, pageNo);
 
+		// 정렬 기준
 		if (sort != null) {
 			param.put("sort", sort);
 		}
 		param.put("pager", pager);
 
+		// 파라미터 기준으로 소셜 리스트 페이지 가져오기
 		List<Social> socialList = socialService.getSocialList(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -114,15 +124,21 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 취소
 	@PatchMapping("/delete/{sno}")
 	public Map<String, String> deleteSocial(@PathVariable int sno) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("sno", sno);
 		param.put("sstatus", "cancel");
+
+		// 소셜 상태 취소로 업데이트
 		socialService.updateStatus(param);
 
+		// 사용자한테 알림 메세지를 보내기 위해 데이터 가져오기
 		List<Member> memberList = memberService.getJoinMember(sno);
 		Social social = socialService.getSpayInfo(sno);
+
+		// 취소한 소셜에 참가한 사용자 전체에 알림 메세지 보내기
 		Iterator<Member> iter = memberList.iterator();
 		while (iter.hasNext()) {
 			memberService.sendAlarm(iter.next().getMid(), "\"" + social.getStitle() + "\"" + "호스트가 어셈블을 취소했습니다. :(\n");
@@ -134,6 +150,7 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 썸네일
 	@GetMapping("/sthumb/{sno}")
 	public void sthumb(@PathVariable int sno, HttpServletResponse response) {
 		Social social = socialService.getSthumb(sno);
@@ -154,12 +171,14 @@ public class SocialController {
 		}
 	}
 
+	// 소셜 참가
 	@PostMapping("/sjoin")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> sjoin(@RequestBody Sjoin sjoin) {
 		Map<String, String> isJoin = socialService.joinSocial(sjoin);
-		Social social = socialService.getSpayInfo(sjoin.getSno());
 
+		// 참가한 소셜의 주최자에게 알림 메시지 전달
+		Social social = socialService.getSpayInfo(sjoin.getSno());
 		if (isJoin.get("response") == "success") {
 			memberService.sendAlarm(social.getMid(),
 					sjoin.getMid() + "님이 " + "\"" + social.getStitle() + "\"" + " 어셈블에 참가하셨습니다. :)\n");
@@ -168,10 +187,12 @@ public class SocialController {
 		return isJoin;
 	}
 
+	// 소셜 참가 인원 수
 	@GetMapping("/sjoin/count/{sno}")
 	public Map<String, Object> sjoinCnt(@PathVariable int sno) {
 		Map<String, Object> map = new HashMap<>();
 
+		// 소셜 참가 인원 수 가져오기
 		int sjoinCnt = socialService.getSjoinCnt(sno);
 
 		map.put("response", "success");
@@ -180,15 +201,17 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 결제 페이지
 	@GetMapping("/pay/{sno}")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> sjoinInfo(@PathVariable int sno) {
 		Map<String, Object> map = new HashMap<>();
-
+		// 만약 sno가 0으로 전달 되면 실패 응답
 		if (sno == 0) {
 			map.put("response", "fail");
 			return map;
 		}
+		// 소셜 결제 페이지의 데이터 가져오기
 		Social spayInfo = socialService.getSpayInfo(sno);
 
 		map.put("response", "success");
@@ -197,8 +220,10 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 참가 여부
 	@GetMapping("/sjoin/state")
 	public Map<String, Object> sjoinState(Sjoin sjoin) {
+		// 현재 사용자의 참가 여부 가져오기
 		boolean sjoinState = socialService.getSjoinState(sjoin);
 
 		Map<String, Object> map = new HashMap<>();
@@ -218,20 +243,26 @@ public class SocialController {
 	@DeleteMapping("/sjoin/cancel")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> cancelSjoin(Sjoin sjoin) {
+		// 소셜 참가 취소
 		socialService.cancelSjoin(sjoin);
-		Social social = socialService.getSpayInfo(sjoin.getSno());
 
+		Map<String, String> map = new HashMap<>();
+
+		// 소셜 참가 취소 메세지를 주최자에게 전달
+		Social social = socialService.getSpayInfo(sjoin.getSno());
 		memberService.sendAlarm(social.getMid(),
 				sjoin.getMid() + "가 " + "\"" + social.getStitle() + "\"" + " 어셈블 참가를 취소했습니다. :(\n");
-		Map<String, String> map = new HashMap<>();
+
 		map.put("response", "success");
 
 		return map;
 	}
 
+	// 소셜 참가 히스토리
 	@GetMapping("/history/join")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> joinHistory(@RequestParam(defaultValue = "1") int jPageNo, String mid) {
+		// 소셜 참가 수 가져오기
 		int totalRows = socialService.getJoinHistoryCnt(mid);
 		Pager pager = new Pager(4, 5, totalRows, jPageNo);
 
@@ -239,6 +270,7 @@ public class SocialController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 소셜 참가 히스토리 가져오기
 		List<Social> joinHistory = socialService.getJoinHistory(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -249,9 +281,11 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 모집 히스토리
 	@GetMapping("/history/recruit")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> recruitHistory(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
+		// 소셜 모집 수 가져오기
 		int totalRows = socialService.getRecruitHistoryCnt(mid);
 		Pager pager = new Pager(4, 5, totalRows, rPageNo);
 
@@ -259,6 +293,7 @@ public class SocialController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 소셜 모집 가져오기
 		List<Social> recruitHistory = socialService.getRecruitHistory(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -276,9 +311,11 @@ public class SocialController {
 		return socialList;
 	}
 
+	// 소셜 참가 인원 리스트
 	@GetMapping("/sjoin/list/{sno}")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> joinMemberList(@PathVariable int sno) {
+		// 소셜에 참가한 사용자 데이터 가져오기
 		List<Member> memberList = memberService.getJoinMember(sno);
 
 		Map<String, Object> map = new HashMap<>();
@@ -288,8 +325,10 @@ public class SocialController {
 		return map;
 	}
 
+	// 소셜 마감 여부 확인
 	@GetMapping("/deadline/{sno}")
 	public Map<String, Object> isDeadline(@PathVariable int sno) {
+		// 소셜 마감 여부 가져오기
 		boolean isDeadline = socialService.isDeadline(sno);
 
 		Map<String, Object> map = new HashMap<>();
@@ -299,16 +338,19 @@ public class SocialController {
 		return map;
 	}
 
+	// 주최자가 사용자 참가 거부
 	@DeleteMapping("/sjoin/refuse")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> refuseJoinMember(Sjoin sjoin) {
+		// 소셜 참가 거부
 		socialService.cancelSjoin(sjoin);
-		Social social = socialService.getSpayInfo(sjoin.getSno());
-
-		memberService.sendAlarm(sjoin.getMid(), "\"" + social.getStitle() + "\"" + " 호스트가 어셈블 참가를 거절했습니다. :(\n"
-				+ "환불된 금액: " + String.format("%,d", social.getSfee()) + "원");
 
 		Map<String, Object> map = new HashMap<>();
+
+		// 사용자에게 소셜 참가 거부 메시지 전달
+		Social social = socialService.getSpayInfo(sjoin.getSno());
+		memberService.sendAlarm(sjoin.getMid(), "\"" + social.getStitle() + "\"" + " 호스트가 어셈블 참가를 거절했습니다. :(\n"
+				+ "환불된 금액: " + String.format("%,d", social.getSfee()) + "원");
 		map.put("response", "success");
 
 		return map;
@@ -317,6 +359,7 @@ public class SocialController {
 	// 검색기능
 	@GetMapping("/search")
 	public Map<String, Object> searchList(String keyword, @RequestParam(defaultValue = "1") int pageNo) {
+		// 키워드로 검색한 소셜의 수 가져오기
 		int totalRows = socialService.getSocialCntByKeyword(keyword);
 
 		Pager pager = new Pager(9, 5, totalRows, pageNo);
@@ -324,6 +367,8 @@ public class SocialController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("keyword", keyword);
 		param.put("pager", pager);
+
+		// 키워드 검색한 소셜 리스트 페이지 가져오기
 		List<Social> list = socialService.getSearchList(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -333,7 +378,6 @@ public class SocialController {
 		map.put("keyword", keyword);
 		map.put("searchSocialList", list);
 		map.put("pager", pager);
-		log.info("map: {}", map);
 
 		return map;
 	}

@@ -11,10 +11,12 @@ public class ImageService {
 	@Autowired
 	ImageDao imageDao;
 
+	// 이미지 업로드
 	public void uploadImage(Image image) {
 		imageDao.insertImage(image);
 	}
 
+	// 이미지 가져오기
 	public Image getImage(String iname) {
 		Image image = imageDao.selectImageByName(iname);
 		return image;

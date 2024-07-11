@@ -419,16 +419,20 @@ public class MemberController {
 		return map;
 	}
 
+	// 유저 알림 페이지 가져오기
 	@GetMapping("/alarm")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> getAlarm(@RequestParam(defaultValue = "1") int pageNo, String mid) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("mid", mid);
 
+		// 확인하지 않은 유저 알림 수 가져오기
 		int totalRows = memberService.getAlarmCntByMid(mid);
 		Pager pager = new Pager(4, 5, totalRows, pageNo);
 
 		param.put("pager", pager);
+
+		// 확인하지 않은 유저 알림 페이지 가져오기
 		List<Alarm> alarmList = memberService.getAlarmList(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -439,9 +443,11 @@ public class MemberController {
 		return map;
 	}
 
+	// 알림 체크
 	@PatchMapping("/alarm/check")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> checkAlarm(int ano) {
+		// 알림 체크 시 상태 변경
 		memberService.checkAlarm(ano);
 
 		Map<String, String> map = new HashMap<>();
@@ -450,9 +456,11 @@ public class MemberController {
 		return map;
 	}
 
+	// 확인하지 않은 알림 유무 확인
 	@GetMapping("/alarm/state")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> isAlarm(String mid) {
+		// 확인하지 않은 알림 여부 가져오기
 		boolean isAlarm = memberService.isAlarm(mid);
 
 		Map<String, Object> map = new HashMap<>();

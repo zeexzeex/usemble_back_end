@@ -28,11 +28,13 @@ public class ReviewController {
 	@Autowired
 	ReviewService reviewService;
 
+	// 리뷰 작성
 	@PostMapping("/write")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, String> writeReview(@RequestBody Review review) {
 		Map<String, String> map = new HashMap<>();
 
+		// 리뷰 작성하기
 		reviewService.write(review);
 
 		map.put("response", "success");
@@ -40,9 +42,11 @@ public class ReviewController {
 		return map;
 	}
 
+	// 리뷰 작성 여부
 	@GetMapping("/state")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> isReview(Review review) {
+		// 리뷰 작성 여부 가져오기
 		boolean isReview = reviewService.isReview(review);
 
 		Map<String, Object> map = new HashMap<>();
@@ -53,8 +57,10 @@ public class ReviewController {
 		return map;
 	}
 
+	// 리뷰 읽기
 	@GetMapping("/read")
 	public Map<String, Object> readReview(Review review) {
+		// 리뷰 가져오기
 		Review data = reviewService.readReview(review);
 
 		Map<String, Object> map = new HashMap<>();
@@ -65,9 +71,11 @@ public class ReviewController {
 		return map;
 	}
 
+	// 리뷰 수정
 	@PatchMapping("/update")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> updateReview(@RequestBody Review review) {
+		// 리뷰 수정하기
 		reviewService.updateReview(review);
 
 		Map<String, Object> map = new HashMap<>();
@@ -77,9 +85,11 @@ public class ReviewController {
 		return map;
 	}
 
+	// 리뷰 삭제
 	@DeleteMapping("/delete")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> deleteReview(Review review) {
+		// 리뷰 삭제하기
 		reviewService.deleteReview(review);
 
 		Map<String, Object> map = new HashMap<>();
@@ -89,8 +99,10 @@ public class ReviewController {
 		return map;
 	}
 
+	// 받은 리뷰 페이지
 	@GetMapping("/recieve")
 	public Map<String, Object> recieveReview(@RequestParam(defaultValue = "1") int rPageNo, String mid) {
+		// 받은 리뷰 수 가져오기
 		int totalRows = reviewService.getRecieveReviewCnt(mid);
 
 		Pager pager = new Pager(4, 5, totalRows, rPageNo);
@@ -100,6 +112,7 @@ public class ReviewController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 리뷰 리스트 페이지 가져오기
 		List<Map<String, Object>> reviewList = reviewService.getRecieveReviewList(param);
 
 		Map<String, Object> map = new HashMap<>();
@@ -111,9 +124,11 @@ public class ReviewController {
 		return map;
 	}
 
+	// 작성한 리뷰 페이지
 	@GetMapping("/leave")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Map<String, Object> leaveReview(@RequestParam(defaultValue = "1") int lPageNo, String mid) {
+		// 작성한 리뷰 수 가져오기
 		int totalRows = reviewService.getLeaveReviewCnt(mid);
 
 		Pager pager = new Pager(4, 5, totalRows, lPageNo);
@@ -123,6 +138,7 @@ public class ReviewController {
 		param.put("mid", mid);
 		param.put("pager", pager);
 
+		// 작성한 리뷰 페이지 가져오기
 		List<Map<String, Object>> reviewList = reviewService.getLeaveReviewList(param);
 
 		Map<String, Object> map = new HashMap<>();
