@@ -245,7 +245,7 @@ public class MemberController {
 	@PatchMapping("/findPassword")
 	public Map<String, String> findPassword(String mid) {
 		Map<String, String> map = new HashMap<>();
-
+		// 비밀번호 찾기(임시 비밀번호 부여)
 		try {
 			// 유저 정보 가져오기
 			AppUserDetails userDetails = (AppUserDetails) userDetailsService.loadUserByUsername(mid);
@@ -257,7 +257,8 @@ public class MemberController {
 			// 임시 비밀번호
 			map.put("result", "success");
 			map.put("mpassword", newPassword);
-		} catch (UsernameNotFoundException e) { // 아이디가 존재하지 않을 때
+		} catch (UsernameNotFoundException e) {
+			// 아이디가 존재하지 않을 때
 			map.put("result", "fail");
 			map.put("reason", "id");
 		}

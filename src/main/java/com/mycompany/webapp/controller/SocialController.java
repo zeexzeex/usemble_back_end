@@ -362,18 +362,20 @@ public class SocialController {
 		// 키워드로 검색한 소셜의 수 가져오기
 		int totalRows = socialService.getSocialCntByKeyword(keyword);
 
+		// 페이징 처리
 		Pager pager = new Pager(9, 5, totalRows, pageNo);
 
 		Map<String, Object> param = new HashMap<>();
 		param.put("keyword", keyword);
 		param.put("pager", pager);
 
-		// 키워드 검색한 소셜 리스트 페이지 가져오기
+		// 키워드로 검색한 소셜 리스트 가져오기
 		List<Social> list = socialService.getSearchList(param);
 
+		// 검색결과를 담을 맵 생성
 		Map<String, Object> map = new HashMap<>();
-		// 데이터를 맵에 저장
 
+		// 데이터를 맵에 저장
 		map.put("response", "success");
 		map.put("keyword", keyword);
 		map.put("searchSocialList", list);

@@ -70,8 +70,8 @@ public class NoticeController {
 		List<Notice> allNotices = noticeService.getAllNotices();
 		int totalRows = allNotices.size();
 
+		// 페이징 처리
 		Pager pager = new Pager(5, 5, totalRows, pageNo);
-
 		param.put("pager", pager);
 
 		// 페이징된 공지사항 목록 가져오기
