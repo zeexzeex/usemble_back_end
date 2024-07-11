@@ -135,7 +135,6 @@ public class MemberController {
 		memberService.join(member);
 		member.setMattach(null);
 		member.setMprofileData(null);
-
 		return member;
 	}
 

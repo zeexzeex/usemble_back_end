@@ -141,7 +141,7 @@ public class SocialController {
 		// 취소한 소셜에 참가한 사용자 전체에 알림 메세지 보내기
 		Iterator<Member> iter = memberList.iterator();
 		while (iter.hasNext()) {
-			memberService.sendAlarm(iter.next().getMid(), "\"" + social.getStitle() + "\"" + "호스트가 어셈블을 취소했습니다. :(\n");
+			memberService.sendAlarm(iter.next().getMid(), "\"" + social.getStitle() + "\"" + " 호스트가 어셈블을 취소했습니다. :(\n");
 		}
 
 		Map<String, String> map = new HashMap<>();
