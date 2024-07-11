@@ -199,7 +199,8 @@ public class AdminController {
 
 		reviewService.deleteReview(review);
 		Social social = socialService.getSpayInfo(review.getSno());
-		memberService.sendAlarm(review.getMid(), "관리자에 의해 " + social.getStitle() + " 리뷰가 삭제 처리되었습니다. :(\n");
+		memberService.sendAlarm(review.getMid(),
+				"관리자에 의해 " + "\"" + social.getStitle() + "\"" + " 리뷰가 삭제 처리되었습니다. :(\n");
 
 		map.put("response", "success");
 
@@ -217,7 +218,8 @@ public class AdminController {
 		Social social = socialService.getSpayInfo(sno);
 		Iterator<Member> iter = memberList.iterator();
 		while (iter.hasNext()) {
-			memberService.sendAlarm(iter.next().getMid(), "관리자에 의해 " + social.getStitle() + " 어셈블이 취소되었습니다. :(\n");
+			memberService.sendAlarm(iter.next().getMid(),
+					"관리자에 의해 " + "\"" + social.getStitle() + "\"" + " 어셈블이 취소되었습니다. :(\n");
 		}
 
 		Map<String, String> map = new HashMap<>();

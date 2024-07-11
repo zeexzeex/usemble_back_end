@@ -125,7 +125,7 @@ public class SocialController {
 		Social social = socialService.getSpayInfo(sno);
 		Iterator<Member> iter = memberList.iterator();
 		while (iter.hasNext()) {
-			memberService.sendAlarm(iter.next().getMid(), social.getStitle() + "호스트가 어셈블을 취소했습니다. :(\n");
+			memberService.sendAlarm(iter.next().getMid(), "\"" + social.getStitle() + "\"" + "호스트가 어셈블을 취소했습니다. :(\n");
 		}
 
 		Map<String, String> map = new HashMap<>();
@@ -162,7 +162,7 @@ public class SocialController {
 
 		if (isJoin.get("response") == "success") {
 			memberService.sendAlarm(social.getMid(),
-					sjoin.getMid() + "님이 " + social.getStitle() + " 어셈블에 참가하셨습니다. :)\n");
+					sjoin.getMid() + "님이 " + "\"" + social.getStitle() + "\"" + " 어셈블에 참가하셨습니다. :)\n");
 		}
 
 		return isJoin;
@@ -221,7 +221,8 @@ public class SocialController {
 		socialService.cancelSjoin(sjoin);
 		Social social = socialService.getSpayInfo(sjoin.getSno());
 
-		memberService.sendAlarm(social.getMid(), sjoin.getMid() + "가 어셈블 참가를 취소했습니다. :(\n");
+		memberService.sendAlarm(social.getMid(),
+				sjoin.getMid() + "가 " + "\"" + social.getStitle() + "\"" + " 어셈블 참가를 취소했습니다. :(\n");
 		Map<String, String> map = new HashMap<>();
 		map.put("response", "success");
 
@@ -304,8 +305,8 @@ public class SocialController {
 		socialService.cancelSjoin(sjoin);
 		Social social = socialService.getSpayInfo(sjoin.getSno());
 
-		memberService.sendAlarm(sjoin.getMid(), social.getStitle() + " 호스트가 어셈블 참가를 거절했습니다. :(\n" + "환불된 금액: "
-				+ String.format("%,d", social.getSfee()) + "원");
+		memberService.sendAlarm(sjoin.getMid(), "\"" + social.getStitle() + "\"" + " 호스트가 어셈블 참가를 거절했습니다. :(\n"
+				+ "환불된 금액: " + String.format("%,d", social.getSfee()) + "원");
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("response", "success");
