@@ -11,7 +11,7 @@ public class Member {
 	private String mid;
 	private String mpassword;
 	private String mname;
-	private int mbirth;
+	private String mbirth;
 	private String msex;
 	private String mphone;
 	private String mbankName;
